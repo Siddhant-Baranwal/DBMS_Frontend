@@ -92,3 +92,26 @@
     border-radius: 50%;
     text-decoration: none;
 }
+
+.loanbutton *{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.loanbutton button{
+    padding: 10px;
+    background-color: black;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.loanbutton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+}
