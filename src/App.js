@@ -30,7 +30,7 @@ function App() {
       <Route path='/loans/taken' element={<LoansTaken />}/>
       <Route path='/loans/given' element={<LoansGiven />}/>
       <Route path='/add/loanstaken' element={<TakeLoan />}/>
-      <Route path='/add/loansgive' element={<GiveLoan />}/>
+      <Route path='/add/loansgiven' element={<GiveLoan />}/>
       <Route path='/sales/bill/:id' element={<BuyBill />}/>
       <Route path='/sales/items/:id' element={<BuyItems />}/>
       <Route path='/add/buyer' element={<AddBuyer />}/>

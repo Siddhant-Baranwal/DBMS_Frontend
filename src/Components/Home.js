@@ -12,6 +12,14 @@ export default function Home() {
           <Link class='homepagelinks' to='/purchase'>Purchase book</Link>
           <Link class='homepagelinks' to='/sales'>Sales book</Link>
         </div>
+        <div class='homecont'>
+          <Link class='homepagelinks' to='/add/buyer'>Add buyer</Link>
+          <Link class='homepagelinks' to='/add/driver'>Add driver</Link>
+          <Link class='homepagelinks' to='/add/item'>Add item</Link>
+          <Link class='homepagelinks' to='/add/supplier'>Add supplier</Link>
+          <Link class='homepagelinks' to='/add/loansgiven'>Give loan</Link>
+          <Link class='homepagelinks' to='/add/loanstaken'>Take loan</Link>
+        </div>
     </div>
   )
 }
