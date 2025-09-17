@@ -21,7 +21,7 @@ export default function AddBuyer() {
 
   const changeHandler = (e) => {
     const {name, value} = e.target;
-    setForm(prev => ({...prev, [name]: value}))
+    setForm(prev => ({...prev, [name]: value}));
   }
 
   return (

@@ -20,7 +20,7 @@
     background-color: black;
 }
 
-.hometitle{
+.title{
     text-align: center;
     margin-bottom: 20px;
     background-color: black;
@@ -35,3 +35,60 @@
     align-items: center;
 }
 
+.tablehead tr th, .tablebody tr td{
+    padding: 10px;
+    text-align: center;
+}
+
+.table{
+    width: 60%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.billform{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 2%;
+}
+
+.billform div{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    font-size: 20px;
+}
+
+.billform div p{
+    margin: 10px;
+}
+
+.billform button{
+    padding: 3px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.editbill{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.addbill{
+    font-size: 40px;
+    font-weight: 900;
+    display: block;
+    text-align: center;
+    margin: auto;
+    margin-top: 3%;
+    color: white;
+    background-color: black;
+    padding: 5px;
+    width: 60px;
+    border-radius: 50%;
+    text-decoration: none;
+}
