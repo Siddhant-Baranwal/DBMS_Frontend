@@ -58,6 +58,9 @@ export default function GiveLoan() {
               })}
             </select>
           )}
+          {showDropdown && (
+            <a href='/add/buyer' target='_blank' class='addbutton'>+</a>
+          )}
         </div>
         <div>
           <p>Rate: </p>

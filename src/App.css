@@ -115,3 +115,14 @@
     align-items: center;
     margin-top: 1%;
 }
+
+.addbutton{
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    padding: 5px;
+    margin: 10px;
+    font-weight: bolder;
+    border-radius: 50%;
+}
+
