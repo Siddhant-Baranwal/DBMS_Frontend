@@ -93,7 +93,7 @@
     text-decoration: none;
 }
 
-.loanbutton *{
+.loanbutton *, .additem *{
     text-decoration: none;
     color: white;
     font-size: 15px;
@@ -101,7 +101,7 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.loanbutton button{
+.loanbutton button, .additem{
     padding: 10px;
     background-color: black;
     margin: 10px;
@@ -126,3 +126,10 @@
     border-radius: 50%;
 }
 
+.itemstable{
+    width: 90%;
+}
+
+.deleteitem{
+    cursor: pointer;
+}
