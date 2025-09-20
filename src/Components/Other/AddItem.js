@@ -1,5 +1,6 @@
 // Page 8
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import axiosInstance from '../../api/axiosInstance';
 
 export default function AddItem() {
 
@@ -13,9 +14,20 @@ export default function AddItem() {
     tax: 0
   })
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
+    const data = {
+      name: form.name,
+      taxRate: form.tax,
+      company: form.company,
+      quantity: form.stock,
+      sp: form.price,
+      mrp: form.mrp,
+      wt: form.weight
+    }
     e.preventDefault();
-    console.log(form);
+    const res = await axiosInstance.post('/items', data);
+    console.log(res);
+    // console.log(form);
   }
 
   const changeHandler = (e) => {
