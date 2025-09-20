@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <div>
-        <h1 class='title' >Welcome to the home page.</h1>
-        <div class='homecont'>
-          <Link class='homepagelinks' to='/loans/taken'>Loans taken</Link>
-          <Link class='homepagelinks' to='/loans/given'>Loans given</Link>
-          <Link class='homepagelinks' to='/purchase'>Purchase book</Link>
-          <Link class='homepagelinks' to='/sales'>Sales book</Link>
+    <div className='page-container animate-fade-in'>
+        <h1 className='page-title' >Welcome to the Dashboard</h1>
+        <div className='home-links-container'>
+          <Link className='home-link' to='/loans/taken'>Loans Taken</Link>
+          <Link className='home-link' to='/loans/given'>Loans Given</Link>
+          <Link className='home-link' to='/purchase'>Purchase Book</Link>
+          <Link className='home-link' to='/sales'>Sales Book</Link>
         </div>
     </div>
   )

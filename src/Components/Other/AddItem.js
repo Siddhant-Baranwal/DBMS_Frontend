@@ -15,19 +15,9 @@ export default function AddItem() {
   })
 
   const submitHandler = async (e) => {
-    const data = {
-      name: form.name,
-      taxRate: form.tax,
-      company: form.company,
-      quantity: form.stock,
-      sp: form.price,
-      mrp: form.mrp,
-      wt: form.weight
-    }
     e.preventDefault();
-    const res = await axiosInstance.post('/items', data);
+    const res = await axiosInstance.post('/items', form);
     console.log(res);
-    // console.log(form);
   }
 
   const changeHandler = (e) => {
@@ -36,38 +26,38 @@ export default function AddItem() {
   }
 
   return (
-    <div>
-      <h1>Add a new item.</h1>
-      <form onSubmit={submitHandler} >
-        <div>
-          <p>Product name: </p>
-          <input name='name' value={form.name} onChange={changeHandler} ></input>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Add a New Item</h1>
+      <form onSubmit={submitHandler} className='form-container'>
+        <div className='form-group'>
+          <label className='form-label'>Product name:</label>
+          <input name='name' value={form.name} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Weight with unit: </p>
-          <input name='weight' value={form.weight} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Weight with unit:</label>
+          <input name='weight' value={form.weight} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>MRP: </p>
-          <input name='mrp' type='number' value={form.mrp} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>MRP:</label>
+          <input name='mrp' type='number' value={form.mrp} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Selling price: </p>
-          <input name='price' type='number' value={form.price} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Selling price:</label>
+          <input name='price' type='number' value={form.price} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Available quantity: </p>
-          <input name='stock' type='number' value={form.stock} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Available quantity:</label>
+          <input name='stock' type='number' value={form.stock} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Company: </p>
-          <input name='company' value={form.company} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Company:</label>
+          <input name='company' value={form.company} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Tax rate: </p>
-          <input name='tax' type='number' value={form.tax} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Tax rate:</label>
+          <input name='tax' type='number' value={form.tax} onChange={changeHandler} className='form-input'></input>
         </div>
-        <button type='submit'>Submit</button>
+        <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     </div>
   )

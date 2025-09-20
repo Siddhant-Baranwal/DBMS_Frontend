@@ -112,39 +112,42 @@ export default function LoansTaken() {
   }
 
   return (
-    <div>
-      <h1 class='title'>This is the LoansTaken page.</h1>
-      <table class='table' border='1'>
-        <thead class='tablehead'>
-          <tr>
-            <th>Supplier GST</th>
-            <th>Interest rate</th>
-            <th>Amount</th>
-            <th>Borrow date</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody class='tablebody'>
-        {loans.map((item, {index}) => {
-          console.log(item);
-          return (
-            <tr key={index}>
-              <td>{item.gst}</td>
-              <td>{item.rate}</td>
-              <td>{item.amount}</td>
-              <td>{item.borrow_day}/{item.borrow_month}/{item.borrow_year}</td>
-              <td>{item.duration_days}</td>
-              <td class='deleteitem' onClick={() => deleteHandler(item.id)}>&#128465;</td>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Loans Taken</h1>
+      <div className='action-bar'>
+        <button onClick={orderByDate} className='btn btn-secondary'>Order by date</button>
+        <button onClick={orderByGST} className='btn btn-secondary'>Order by supplier</button>
+        <button onClick={reloadHandler} className='btn btn-secondary'>Reload</button>
+        <a href='/add/loanstaken' target='_blank' className='btn btn-primary'>Take a new loan</a>
+      </div>
+      <div className='table-wrapper'>
+        <table className='data-table'>
+          <thead>
+            <tr>
+              <th>Supplier GST</th>
+              <th>Interest rate</th>
+              <th>Amount</th>
+              <th>Borrow date</th>
+              <th>Duration</th>
+              <th></th>
             </tr>
-          )
-        })}
-        </tbody>
-      </table>
-      <div class='loanbutton'>
-      <button onClick={orderByDate}>Order by date</button>
-      <button onClick={orderByGST}>Order by supplier</button>
-      <button onClick={reloadHandler}>Reload</button>
-      <button><a href='/add/loanstaken' target='_blank'>Take a new loan</a></button>
+          </thead>
+          <tbody>
+          {loans.map((item, {index}) => {
+            console.log(item);
+            return (
+              <tr key={index}>
+                <td>{item.gst}</td>
+                <td>{item.rate}</td>
+                <td>{item.amount}</td>
+                <td>{item.borrow_day}/{item.borrow_month}/{item.borrow_year}</td>
+                <td>{item.duration_days}</td>
+                <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(item.id)}>&#128465;</button></td>
+              </tr>
+            )
+          })}
+          </tbody>
+        </table>
       </div>
     </div>
   )

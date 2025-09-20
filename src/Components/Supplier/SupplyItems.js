@@ -134,91 +134,97 @@ export default function SupplyItems() {
   }
 
   return (
-    <div>
-      <h1 class='title'>Bill number : {id}</h1>
-      <table class='table itemstable' border='1'>
-        <thead class='tablehead'>
-          <tr>
-            <th>S.I.</th>
-            <th>Name</th>
-            <th>Weight</th>
-            <th>Company</th>
-            <th>MRP</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Discount</th>
-            <th>Total</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody class='tablebody'>
-        {items.map((each, index) => {
-          return (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{each.name}</td>
-              <td>{each.weight}</td>
-              <td>{each.company}</td>
-              <td>{each.mrp}</td>
-              <td>{each.price}</td>
-              <td>{each.quantity}</td>
-              <td>{each.discount}</td>
-              <td>{(each.quantity * each.price * (100 - each.discount)/100).toFixed(2)}</td>
-              <td class='deleteitem' onClick={() => deleteHandler(each.itemid)}>&#128465;</td>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Bill number : {id}</h1>
+      <div className='table-wrapper'>
+        <table className='data-table'>
+          <thead>
+            <tr>
+              <th>S.I.</th>
+              <th>Name</th>
+              <th>Weight</th>
+              <th>Company</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Discount</th>
+              <th>Total</th>
+              <th></th>
             </tr>
-          )
-        })}
-        </tbody>
-      </table>
-      <h1>Total: {totalAmount.toFixed(2)}</h1>
-      <div>
-        <div>
-          <p>Search item by name:</p>
-          <input
-            name='searchName'
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            placeholder='Type item name'
-          />
-        </div>
-
-        <div>
-          <table class='table searchtable' border='1'>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Weight</th>
-                <th>Company</th>
-                <th>Price</th>
-                <th>MRP</th>
-                <th>Tax</th>
+          </thead>
+          <tbody>
+          {items.map((each, index) => {
+            return (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{each.name}</td>
+                <td>{each.weight}</td>
+                <td>{each.company}</td>
+                <td>{each.mrp}</td>
+                <td>{each.price}</td>
+                <td>{each.quantity}</td>
+                <td>{each.discount}</td>
+                <td>{(each.quantity * each.price * (100 - each.discount)/100).toFixed(2)}</td>
+                <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(each.itemid)}>&#128465;</button></td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredItems.map((it, idx) => (
-                <tr key={idx} onClick={() => onSelectItem(it)}>
-                  <td>{idx + 1}</td>
-                  <td>{it.name}</td>
-                  <td>{it.weight}</td>
-                  <td>{it.company}</td>
-                  <td>{it.price}</td>
-                  <td>{it.mrp}</td>
-                  <td>{it.tax}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            )
+          })}
+          </tbody>
+        </table>
+      </div>
+      <h2 className='total-summary'>Total: {totalAmount.toFixed(2)}</h2>
+      <div className='add-item-section'>
+        <div className='search-and-select'>
+            <div className='form-group'>
+              <label className='form-label'>Search item by name:</label>
+              <input
+                className='form-input'
+                name='searchName'
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                placeholder='Type item name'
+              />
+            </div>
+
+            <div className='table-wrapper search-results'>
+              <table className='data-table'>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Weight</th>
+                    <th>Company</th>
+                    <th>Price</th>
+                    <th>MRP</th>
+                    <th>Tax</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredItems.map((it, idx) => (
+                    <tr key={idx} onClick={() => onSelectItem(it)} className='table-row-hover'>
+                      <td>{idx + 1}</td>
+                      <td>{it.name}</td>
+                      <td>{it.weight}</td>
+                      <td>{it.company}</td>
+                      <td>{it.price}</td>
+                      <td>{it.mrp}</td>
+                      <td>{it.tax}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
         </div>
 
-        <div>
+        <div className='selected-item-card'>
           {selectedItem ? (
             <div>
-              <p>Selected: {selectedItem.name} ({selectedItem.weight})</p>
+              <p className='selected-item-title'>Selected: {selectedItem.name} ({selectedItem.weight})</p>
 
-              <div>
-                <label>Quantity: </label>
+              <div className='form-group'>
+                <label className='form-label'>Quantity:</label>
                 <input
+                  className='form-input'
                   name='selQuantity'
                   type='number'
                   min='1'
@@ -227,9 +233,10 @@ export default function SupplyItems() {
                 />
               </div>
 
-              <div>
-                <label>Discount (%): </label>
+              <div className='form-group'>
+                <label className='form-label'>Discount (%):</label>
                 <input
+                  className='form-input'
                   name='selDiscount'
                   type='number'
                   min='0'
@@ -239,16 +246,15 @@ export default function SupplyItems() {
                 />
               </div>
 
-              <div>
-                <button type='button' onClick={onAddClick}>Add</button>
+              <div className='action-bar'>
+                <button type='button' onClick={onAddClick} className='btn btn-primary'>Add</button>
               </div>
             </div>
           ) : (
-            <p>No item selected</p>
+            <p className='placeholder-text'>No item selected</p>
           )}
-          <button class='additem'><a href='/add/item' target='_blank'>New item</a></button>
+          <a href='/add/item' target='_blank' className='btn-link'>Add New Item to Database</a>
         </div>
-
       </div>
     </div>
   )

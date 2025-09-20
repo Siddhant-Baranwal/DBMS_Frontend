@@ -62,58 +62,64 @@ export default function SupplyBill() {
   };
 
   return (
-    <div>
-      <h1 class='title'>Bill details</h1>
-      <form onSubmit={submitHandler}>
-        <div>
-          <p>Bill number: </p>
-          <input name='bill' type='number' value={form.bill} readOnly onChange={changeHandler} ></input>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Purchase Bill Details</h1>
+      <form onSubmit={submitHandler} className='form-container'>
+        <div className='form-group'>
+          <label className='form-label'>Bill Number:</label>
+          <input name='bill' type='number' value={form.bill} readOnly onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Supplier GST: </p>
-          <input name='gst' value={form.gst} onChange={changeHandler} ></input>
-          {showDropdownSuppliers && (
-            <select size={1 + currentSuppliers.length} onChange={selectHandlerSupplier} >
-              <option value=''>--Choose a value--</option>
-              {currentSuppliers.map((item, index) => {
-                return(
-                  <option key={index} value={item}>{item}</option>
-                )
-              })}
-            </select>
-          )}
-          {showDropdownSuppliers && (
-            <a href='/add/supplier' target='_blank' class='addbutton'>+</a>
-          )}
+        <div className='form-group'>
+          <label className='form-label'>Supplier GST:</label>
+          <div className='input-with-select'>
+              <input name='gst' value={form.gst} onChange={changeHandler} className='form-input'></input>
+              {showDropdownSuppliers && (
+                <div className='dropdown-wrapper'>
+                    <select size={1 + currentSuppliers.length} onChange={selectHandlerSupplier} className='dropdown-select'>
+                      <option value=''>--Choose a value--</option>
+                      {currentSuppliers.map((item, index) => {
+                        return(
+                          <option key={index} value={item}>{item}</option>
+                        )
+                      })}
+                    </select>
+                    <a href='/add/supplier' target='_blank' className='btn-icon btn-add'>+</a>
+                </div>
+              )}
+          </div>
         </div>
-        <div>
-          <p>Order date: </p>
-          <input name='order_day' type='number' value={form.order_day} onChange={changeHandler} ></input>
-          <p>/</p>
-          <input name='order_month' type='number' value={form.order_month} onChange={changeHandler} ></input>
-          <p>/</p>
-          <input name='order_year' type='number' value={form.order_year} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Order Date:</label>
+          <div className='date-group'>
+              <input name='order_day' type='number' value={form.order_day} onChange={changeHandler} className='form-input-date'></input>
+              <p>/</p>
+              <input name='order_month' type='number' value={form.order_month} onChange={changeHandler} className='form-input-date'></input>
+              <p>/</p>
+              <input name='order_year' type='number' value={form.order_year} onChange={changeHandler} className='form-input-date year'></input>
+          </div>
         </div>
-        <div>
-          <p>Driver license: </p>
-          <input name='driver' value={form.driver} onChange={changeHandler} ></input>
-          {showDropdownDrivers && (
-            <select size={1 + currentDrivers.length} onChange={selectHandlerDriver} >
-              <option value=''>--Choose a value--</option>
-              {currentDrivers.map((item, index) => {
-                return(
-                  <option key={index} value={item}>{item}</option>
-                )
-              })}
-            </select>
-          )}
-          {showDropdownDrivers && (
-            <a href='/add/driver' target='_blank' class='addbutton'>+</a>
-          )}
+        <div className='form-group'>
+          <label className='form-label'>Driver license:</label>
+          <div className='input-with-select'>
+              <input name='driver' value={form.driver} onChange={changeHandler} className='form-input'></input>
+              {showDropdownDrivers && (
+                <div className='dropdown-wrapper'>
+                    <select size={1 + currentDrivers.length} onChange={selectHandlerDriver} className='dropdown-select'>
+                      <option value=''>--Choose a value--</option>
+                      {currentDrivers.map((item, index) => {
+                        return(
+                          <option key={index} value={item}>{item}</option>
+                        )
+                      })}
+                    </select>
+                    <a href='/add/driver' target='_blank' className='btn-icon btn-add'>+</a>
+                </div>
+              )}
+          </div>
         </div>
         <button type='submit' disabled={
           !(suppliers.includes(form.gst) && drivers.includes(form.driver))
-        }>Next</button>
+        } className='btn btn-primary'>Next</button>
       </form>
     </div>
   )

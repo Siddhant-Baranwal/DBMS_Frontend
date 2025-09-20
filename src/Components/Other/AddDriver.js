@@ -26,46 +26,46 @@ export default function AddDriver() {
   }
 
   return (
-    <div>
-      <h1>Add a new driver.</h1>
-      <form onSubmit={submitHandler} >
-        <div>
-          <p>First name: </p>
-          <input name='fname' value={form.fname} onChange={changeHandler} ></input>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Add a New Driver</h1>
+      <form onSubmit={submitHandler} className='form-container'>
+        <div className='form-group'>
+          <label className='form-label'>First name:</label>
+          <input name='fname' value={form.fname} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Last name: </p>
-          <input name='lname' value={form.lname} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Last name:</label>
+          <input name='lname' value={form.lname} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Phone number: </p>
-          <input name='phone' value={form.phone} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Phone number:</label>
+          <input name='phone' value={form.phone} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Aadhar number: </p>
-          <input name='aadhar' value={form.aadhar} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Aadhar number:</label>
+          <input name='aadhar' value={form.aadhar} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>DL number: </p>
-          <input name='license' value={form.license} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>DL number:</label>
+          <input name='license' value={form.license} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>City: </p>
-          <input name='city' value={form.city} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>City:</label>
+          <input name='city' value={form.city} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Zip code: </p>
-          <input name='zip' value={form.zip} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Zip code:</label>
+          <input name='zip' value={form.zip} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Locality: </p>
-          <input name='locality' value={form.locality} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Locality:</label>
+          <input name='locality' value={form.locality} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>House number: </p>
-          <input name='house' value={form.house} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>House number:</label>
+          <input name='house' value={form.house} onChange={changeHandler} className='form-input'></input>
         </div>
-        <button type='submit'>Submit</button>
+        <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     </div>
   )

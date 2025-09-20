@@ -88,47 +88,49 @@ export default function PurchaseBook() {
   }
 
   return (
-    <div>
-      <h1 class='title'>This is the purchase book.</h1>
-      <form onSubmit={submitHandler} class='billform'>
-        <div>
-          <p>From: </p>
-          <input name='start_date' value={form.start_date} type='date' defaultValue='2000-01-01' onChange={changeHandler}></input>
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Purchase Book</h1>
+      <form onSubmit={submitHandler} className='filter-form'>
+        <div className='form-group'>
+          <label className='form-label'>From:</label>
+          <input name='start_date' value={form.start_date} type='date' defaultValue='2000-01-01' onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>To: </p>
-          <input name='end_date' value={form.end_date}  type='date' defaultValue='2026-01-01' onChange={changeHandler}></input>
+        <div className='form-group'>
+          <label className='form-label'>To:</label>
+          <input name='end_date' value={form.end_date}  type='date' defaultValue='2026-01-01' onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>GST: </p>
-          <input name='gst' value={form.gst} onChange={changeHandler}></input>
+        <div className='form-group'>
+          <label className='form-label'>GST:</label>
+          <input name='gst' value={form.gst} onChange={changeHandler} className='form-input'></input>
         </div>
-        <button type='submit'>&#128269;</button>
+        <button type='submit' className='btn btn-icon'>&#128269;</button>
       </form>
-      <table class='table' border='1'>
-      <thead class='tablehead'>
-        <tr>
-          <th>Bill number</th>
-          <th>Order date</th>
-          <th>Supplier GST</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody class='tablebody'>
-      {purchases.map((item, index) => {
-        // console.log(item);
-        return (
-          <tr key={index}>
-            <td>{item.bill_number}</td>
-            <td>{item.order_day}/{item.order_month}/{item.order_year}</td>
-            <td>{item.provider}</td>
-            <td><Link class='editbill' to={`/purchase/bill/${item.bill_number}`}>&#128394;</Link> </td>
-          </tr>
-        )
-      })}
-      </tbody>
-      </table>
-      <Link to={`/purchase/bill/${Date.now() % 10000000000}`} class='addbill'>+</Link>
+      <div className='table-wrapper'>
+        <table className='data-table'>
+          <thead>
+            <tr>
+              <th>Bill number</th>
+              <th>Order date</th>
+              <th>Supplier GST</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {purchases.map((item, index) => {
+            // console.log(item);
+            return (
+              <tr key={index}>
+                <td>{item.bill_number}</td>
+                <td>{item.order_day}/{item.order_month}/{item.order_year}</td>
+                <td>{item.provider}</td>
+                <td><Link className='btn-icon' to={`/purchase/bill/${item.bill_number}`}>&#128394;</Link> </td>
+              </tr>
+            )
+          })}
+          </tbody>
+        </table>
+      </div>
+      <Link to={`/purchase/bill/${Date.now() % 10000000000}`} className='floating-add-btn'>+</Link>
     </div>
   )
 }

@@ -44,47 +44,51 @@ export default function TakeLoan() {
   };
 
   return (
-    <div>
-      <h1 class='title'>Take a new loan.</h1>
-      <form onSubmit={submitHandler} >
-        <div>
-          <p>Supplier GST: </p>
-          <input name='gst' value={form.gst} onChange={changeHandler} ></input>
-          {showDropdown && (
-            <select size={1 + currentSuppliers.length} onChange={selectHandler} >
-              <option value=''>--Choose a value--</option>
-              {currentSuppliers.map((item, index) => {
-                return(
-                  <option key={index} value={item}>{item}</option>
-                )
-              })}
-            </select>
-          )}
-          {showDropdown && (
-            <a href='/add/supplier' target='_blank' class='addbutton'>+</a>
-          )}
+    <div className='page-container animate-fade-in'>
+      <h1 className='page-title'>Take a New Loan</h1>
+      <form onSubmit={submitHandler} className='form-container'>
+        <div className='form-group'>
+          <label className='form-label'>Supplier GST:</label>
+          <div className='input-with-select'>
+              <input name='gst' value={form.gst} onChange={changeHandler} className='form-input'></input>
+              {showDropdown && (
+                <div className='dropdown-wrapper'>
+                    <select size={1 + currentSuppliers.length} onChange={selectHandler} className='dropdown-select'>
+                      <option value=''>--Choose a value--</option>
+                      {currentSuppliers.map((item, index) => {
+                        return(
+                          <option key={index} value={item}>{item}</option>
+                        )
+                      })}
+                    </select>
+                    <a href='/add/supplier' target='_blank' className='btn-icon btn-add'>+</a>
+                </div>
+              )}
+          </div>
         </div>
-        <div>
-          <p>Rate: </p>
-          <input name='rate' type='number' value={form.rate} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Rate:</label>
+          <input name='rate' type='number' value={form.rate} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Amount: </p>
-          <input name='amount' type='number' value={form.amount} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Amount:</label>
+          <input name='amount' type='number' value={form.amount} onChange={changeHandler} className='form-input'></input>
         </div>
-        <div>
-          <p>Borrow date: </p>
-          <input name='borrow_month' type='number' value={form.borrow_month} onChange={changeHandler} ></input>
-          <p>/</p>
-          <input name='borrow_day' type='number' value={form.borrow_day} onChange={changeHandler} ></input>
-          <p>/</p>
-          <input name='borrow_year' type='number' value={form.borrow_year} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Borrow date:</label>
+          <div className='date-group'>
+              <input name='borrow_month' type='number' value={form.borrow_month} onChange={changeHandler} className='form-input-date'></input>
+              <p>/</p>
+              <input name='borrow_day' type='number' value={form.borrow_day} onChange={changeHandler} className='form-input-date'></input>
+              <p>/</p>
+              <input name='borrow_year' type='number' value={form.borrow_year} onChange={changeHandler} className='form-input-date year'></input>
+          </div>
         </div>
-        <div>
-          <p>Duration in days: </p>
-          <input name='duration_day' type='number' value={form.duration_day} onChange={changeHandler} ></input>
+        <div className='form-group'>
+          <label className='form-label'>Duration in days:</label>
+          <input name='duration_day' type='number' value={form.duration_day} onChange={changeHandler} className='form-input'></input>
         </div>
-        <button disabled={showDropdown} type='submit'>Submit</button>
+        <button disabled={showDropdown} type='submit' className='btn btn-primary'>Submit</button>
       </form>
     </div>
   )
