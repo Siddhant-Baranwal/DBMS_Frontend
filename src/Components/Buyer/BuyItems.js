@@ -1,8 +1,8 @@
-// Page 5
+// Page 14
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-export default function SupplyItems() {
+export default function BuyItems() {
   const {id} = useParams();
   const [allItems, setAllItems] = useState([
     {
@@ -94,7 +94,7 @@ export default function SupplyItems() {
   ]);
 
   const deleteHandler = (itemid) => {
-    // delete purchase list having bill id id and item id itemid. Then setItems(get the new items)
+    // delete sales list having bill id id and item id itemid. Then setItems(get the new items)
     console.log(itemid);
   }
 
@@ -129,7 +129,7 @@ export default function SupplyItems() {
     if (!selectedItem) return;
     setSelectedItem(null);
     setSearchName('');
-    // Add the entry of bill id, item id, discount, quantity to the purchase list.
+    // Add the entry of bill id, item id, discount, quantity to the sales list.
     console.log(selectedItem.name, selectedItem.itemid, Number(selDiscount), Number(selQuantity));
   }
 

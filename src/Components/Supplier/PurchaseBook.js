@@ -1,5 +1,5 @@
 // Page 2
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function PurchaseBook() {
@@ -38,9 +38,9 @@ export default function PurchaseBook() {
     }
   ]);
   const [form, setForm] = useState({
-    start_date: '01/01/2000',
-    end_date: '01/01/2025',
-    gst: 'MAN13'
+    start_date: '2000-01-01',
+    end_date: '2025-01-01',
+    gst: ''
   })
   
   const submitHandler = (e) => {
@@ -93,15 +93,15 @@ export default function PurchaseBook() {
       <form onSubmit={submitHandler} class='billform'>
         <div>
           <p>From: </p>
-          <input type='date' defaultValue='2000-01-01' onChange={changeHandler}></input>
+          <input name='start_date' value={form.start_date} type='date' defaultValue='2000-01-01' onChange={changeHandler}></input>
         </div>
         <div>
           <p>To: </p>
-          <input type='date' defaultValue='2026-01-01' onChange={changeHandler}></input>
+          <input name='end_date' value={form.end_date}  type='date' defaultValue='2026-01-01' onChange={changeHandler}></input>
         </div>
         <div>
           <p>GST: </p>
-          <input onChange={changeHandler}></input>
+          <input name='gst' value={form.gst} onChange={changeHandler}></input>
         </div>
         <button type='submit'>&#128269;</button>
       </form>
@@ -115,8 +115,8 @@ export default function PurchaseBook() {
         </tr>
       </thead>
       <tbody class='tablebody'>
-      {purchases.map((item, {index}) => {
-        console.log(item);
+      {purchases.map((item, index) => {
+        // console.log(item);
         return (
           <tr key={index}>
             <td>{item.bill_number}</td>

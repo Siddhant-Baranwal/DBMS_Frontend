@@ -1,7 +1,7 @@
-// Page 7
+// Page 6
 import React, { useState } from 'react'
 
-export default function AddBuyer() {
+export default function AddSupplier() {
 
   const [form, setForm] = useState({
     name: 'test name',
@@ -21,12 +21,12 @@ export default function AddBuyer() {
 
   const changeHandler = (e) => {
     const {name, value} = e.target;
-    setForm(prev => ({...prev, [name]: value}));
+    setForm(prev => ({...prev, [name]: value}))
   }
 
   return (
     <div>
-      <h1>Add a new buyer.</h1>
+      <h1>Add a new supplier.</h1>
       <form onSubmit={submitHandler} >
         <div>
           <p>Name of the firm: </p>

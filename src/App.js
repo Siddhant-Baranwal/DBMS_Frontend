@@ -1,20 +1,20 @@
 import { Routes, Route} from 'react-router-dom';
 import './App.css';
-import Home from './Components/Home';
-import LoansTaken from './Components/LoansTaken';
-import LoansGiven from './Components/LoansGiven';
-import PurchaseBook from './Components/PurchaseBook';
-import SalesBook from './Components/SalesBook';
-import AddItem from './Components/AddItem';
-import AddSupplier from './Components/AddSupplier';
-import AddBuyer from './Components/AddBuyer';
-import AddDriver from './Components/AddDriver';
-import TakeLoan from './Components/TakeLoan';
-import GiveLoan from './Components/GiveLoan';
-import BuyItems from './Components/BuyItems';
-import BuyBill from './Components/BuyBill';
-import SupplyItems from './Components/SupplyItems';
-import SupplyBill from './Components/SupplyBill';
+import Home from './Components/Other/Home';
+import PurchaseBook from './Components/Supplier/PurchaseBook';
+import SalesBook from './Components/Buyer/SalesBook';
+import SupplyBill from './Components/Supplier/SupplyBill';
+import SupplyItems from './Components/Supplier/SupplyItems';
+import AddSupplier from './Components/Supplier/AddSupplier';
+import AddDriver from './Components/Other/AddDriver';
+import AddItem from './Components/Other/AddItem';
+import LoansTaken from './Components/Loans/LoansTaken';
+import LoansGiven from './Components/Loans/LoansGiven';
+import TakeLoan from './Components/Loans/TakeLoan';
+import GiveLoan from './Components/Loans/GiveLoan';
+import BuyBill from './Components/Buyer/BuyBill';
+import BuyItems from './Components/Buyer/BuyItems';
+import AddBuyer from './Components/Buyer/AddBuyer';
 
 function App() {
   return (

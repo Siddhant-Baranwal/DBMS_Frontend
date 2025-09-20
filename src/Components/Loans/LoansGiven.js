@@ -1,11 +1,11 @@
-// Page 9
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+// Page 10
+import React, { useState } from 'react';
 
-export default function LoansTaken() {
+export default function LoansGiven() {
 
   const [loans, setLoans] = useState([
     {
+      id: 1,
       gst: 'VSA25464',
       rate: 5,
       amount: 10000,
@@ -15,6 +15,7 @@ export default function LoansTaken() {
       duration_days: 1000
     },
     {
+      id: 2,
       gst: 'JTYJ54634',
       rate: 5,
       amount: 10000,
@@ -24,6 +25,7 @@ export default function LoansTaken() {
       duration_days: 1000
     },
     {
+      id: 3,
       gst: 'GAR4312421',
       rate: 5,
       amount: 10000,
@@ -33,6 +35,7 @@ export default function LoansTaken() {
       duration_days: 1000
     },
     {
+      id: 4,
       gst: 'GSE3453435',
       rate: 5,
       amount: 10000,
@@ -62,6 +65,7 @@ export default function LoansTaken() {
   const reloadHandler = () => {
     setLoans([
       {
+        id: 1,
         gst: 'GER3W3645',
         rate: Math.floor(Math.random() * 5),
         amount: Math.floor(Math.random() * 100000),
@@ -71,6 +75,7 @@ export default function LoansTaken() {
         duration_days: Math.floor(Math.random() * 1000)
       },
       {
+        id: 2,
         gst: 'MAN23984',
         rate: Math.floor(Math.random() * 5),
         amount: Math.floor(Math.random() * 100000),
@@ -80,6 +85,7 @@ export default function LoansTaken() {
         duration_days: Math.floor(Math.random() * 1000)
       },
       {
+        id: 3,
         gst: 'NMTY563',
         rate: Math.floor(Math.random() * 5),
         amount: Math.floor(Math.random() * 100000),
@@ -89,6 +95,7 @@ export default function LoansTaken() {
         duration_days: Math.floor(Math.random() * 1000)
       },
       {
+        id: 4,
         gst: 'VXZCV3426',
         rate: Math.floor(Math.random() * 5),
         amount: Math.floor(Math.random() * 100000),
@@ -100,13 +107,17 @@ export default function LoansTaken() {
     ])
   }
 
+  const deleteHandler = (id) => {
+    console.log(id);
+  }
+
   return (
     <div>
-      <h1 class='title'>This is the LoansTaken page.</h1>
+      <h1 class='title'>This is the LoansGiven page.</h1>
       <table class='table' border='1'>
         <thead class='tablehead'>
           <tr>
-            <th>Supplier GST</th>
+            <th>Buyer GST</th>
             <th>Interest rate</th>
             <th>Amount</th>
             <th>Borrow date</th>
@@ -123,6 +134,7 @@ export default function LoansTaken() {
               <td>{item.amount}</td>
               <td>{item.borrow_day}/{item.borrow_month}/{item.borrow_year}</td>
               <td>{item.duration_days}</td>
+              <td class='deleteitem' onClick={() => deleteHandler(item.id)}>&#128465;</td>
             </tr>
           )
         })}
@@ -130,9 +142,9 @@ export default function LoansTaken() {
       </table>
       <div class='loanbutton'>
       <button onClick={orderByDate}>Order by date</button>
-      <button onClick={orderByGST}>Order by supplier</button>
+      <button onClick={orderByGST}>Order by buyer</button>
       <button onClick={reloadHandler}>Reload</button>
-      <button><a href='/add/loanstaken' target='_blank'>Take a new loan</a></button>
+      <button><a href='/add/loanstaken' target='_blank'>Give a new loan</a></button>
       </div>
     </div>
   )

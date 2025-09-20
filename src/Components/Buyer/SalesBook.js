@@ -1,16 +1,16 @@
-// Page 2
+// Page 3
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function SalesBook() {
-  const [sales, setSales] = useState([
+  const [sales, setSaless] = useState([
     {
       bill_number: 1,
       order_day: 23,
       order_month: 9,
       order_year: 2025,
       carrier: 'Chintu Prasad',
-      requester: 'MAN420786'
+      customer: 'MAN420786'
     },
     {
       bill_number: 2,
@@ -18,7 +18,7 @@ export default function SalesBook() {
       order_month: 9,
       order_year: 2025,
       carrier: 'Chintu Prasad',
-      requester: 'MAN420786'
+      customer: 'MAN420786'
     },
     {
       bill_number: 3,
@@ -26,7 +26,7 @@ export default function SalesBook() {
       order_month: 9,
       order_year: 2025,
       carrier: 'Chintu Prasad',
-      requester: 'MAN420786'
+      customer: 'MAN420786'
     },
     {
       bill_number: 4,
@@ -34,26 +34,26 @@ export default function SalesBook() {
       order_month: 9,
       order_year: 2025,
       carrier: 'Chintu Prasad',
-      requester: 'MAN420786'
+      customer: 'MAN420786'
     }
   ]);
   const [form, setForm] = useState({
-    start_date: '01/01/2000',
-    end_date: '01/01/2025',
-    gst: 'MAN13'
+    start_date: '2000-01-01',
+    end_date: '2025-01-01',
+    gst: ''
   })
   
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(form);
-    setSales([
+    setSaless([
       {
         bill_number: 1,
         order_day: 1 + Math.floor(Math.random() * 30),
         order_month: 1 + Math.floor(Math.random() * 12),
         order_year: 2000 + Math.floor(Math.random() * 26),
         carrier: 'Chintu Prasad',
-        requester: 'MAN23554'
+        customer: 'MAN23554'
       },
       {
         bill_number: 2,
@@ -61,7 +61,7 @@ export default function SalesBook() {
         order_month: 1 + Math.floor(Math.random() * 12),
         order_year: 2000 + Math.floor(Math.random() * 26),
         carrier: 'Chintu Prasad',
-        requester: 'MAN23554'
+        customer: 'MAN23554'
       },
       {
         bill_number: 3,
@@ -69,7 +69,7 @@ export default function SalesBook() {
         order_month: 1 + Math.floor(Math.random() * 12),
         order_year: 2000 + Math.floor(Math.random() * 26),
         carrier: 'Chintu Prasad',
-        requester: 'MAN23554'
+        customer: 'MAN23554'
       },
       {
         bill_number: 4,
@@ -77,7 +77,7 @@ export default function SalesBook() {
         order_month: 1 + Math.floor(Math.random() * 12),
         order_year: 2000 + Math.floor(Math.random() * 26),
         carrier: 'Chintu Prasad',
-        requester: 'MAN23554'
+        customer: 'MAN23554'
       }
     ])
   }
@@ -93,15 +93,15 @@ export default function SalesBook() {
       <form onSubmit={submitHandler} class='billform'>
         <div>
           <p>From: </p>
-          <input type='date' defaultValue='2000-01-01' onChange={changeHandler}></input>
+          <input name='start_date' value={form.start_date} type='date' defaultValue='2000-01-01' onChange={changeHandler}></input>
         </div>
         <div>
           <p>To: </p>
-          <input type='date' defaultValue='2026-01-01' onChange={changeHandler}></input>
+          <input name='end_date' value={form.end_date}  type='date' defaultValue='2026-01-01' onChange={changeHandler}></input>
         </div>
         <div>
           <p>GST: </p>
-          <input onChange={changeHandler}></input>
+          <input name='gst' value={form.gst} onChange={changeHandler}></input>
         </div>
         <button type='submit'>&#128269;</button>
       </form>
@@ -115,13 +115,13 @@ export default function SalesBook() {
         </tr>
       </thead>
       <tbody class='tablebody'>
-      {sales.map((item, {index}) => {
-        console.log(item);
+      {sales.map((item, index) => {
+        // console.log(item);
         return (
           <tr key={index}>
             <td>{item.bill_number}</td>
             <td>{item.order_day}/{item.order_month}/{item.order_year}</td>
-            <td>{item.requester}</td>
+            <td>{item.customer}</td>
             <td><Link class='editbill' to={`/sales/bill/${item.bill_number}`}>&#128394;</Link> </td>
           </tr>
         )

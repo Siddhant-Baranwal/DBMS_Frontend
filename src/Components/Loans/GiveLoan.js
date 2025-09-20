@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+// Page 10
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function GiveLoan() {
-  const suppliers = ['ABS1242', 'ABC234', 'TE241532', 'GWEE234'];
-  const [currentSuppliers, setCurrentSuppliers] = useState(suppliers);
+  const buyers = ['ABS1242', 'ABC234', 'TE241532', 'GWEE234'];
+  const [currentBuyers, setCurrentBuyers] = useState(buyers);
   const today = new Date();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     gst: '',
     rate: 5,
@@ -19,15 +22,16 @@ export default function GiveLoan() {
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(form);
+    navigate('/loans/given');
   };
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
     if (name === 'gst') {
       const q = (value || '').toUpperCase();
-      const filt = suppliers.filter((item) => item.toUpperCase().startsWith(q));
-      setCurrentSuppliers(filt);
-      const exactMatch = suppliers.some((s) => s.toUpperCase() === q);
+      const filt = buyers.filter((item) => item.toUpperCase().startsWith(q));
+      setCurrentBuyers(filt);
+      const exactMatch = buyers.some((s) => s.toUpperCase() === q);
       setShowDropdown(!exactMatch);
     }
     setForm(prev => ({ ...prev, [name]: value }));
@@ -36,20 +40,22 @@ export default function GiveLoan() {
   const selectHandler = (e) => {
     const value = e.target.value;
     setForm(prev => ({ ...prev, gst: value }));
-    if (suppliers.includes(value)) setShowDropdown(false);
+    if (buyers.includes(value)) {
+      setShowDropdown(false);
+    }
   };
 
   return (
     <div>
-      <h1 class='title'>Take a new loan.</h1>
+      <h1 class='title'>Give a new loan.</h1>
       <form onSubmit={submitHandler} >
         <div>
-          <p>Supplier GST: </p>
+          <p>Buyer GST: </p>
           <input name='gst' value={form.gst} onChange={changeHandler} ></input>
           {showDropdown && (
-            <select size={1 + currentSuppliers.length} onChange={selectHandler} >
+            <select size={1 + currentBuyers.length} onChange={selectHandler} >
               <option value=''>--Choose a value--</option>
-              {currentSuppliers.map((item, index) => {
+              {currentBuyers.map((item, index) => {
                 return(
                   <option key={index} value={item}>{item}</option>
                 )
@@ -57,7 +63,7 @@ export default function GiveLoan() {
             </select>
           )}
           {showDropdown && (
-            <a href='/add/supplier' target='_blank' class='addbutton'>+</a>
+            <a href='/add/buyer' target='_blank' class='addbutton'>+</a>
           )}
         </div>
         <div>

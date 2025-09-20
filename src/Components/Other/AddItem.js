@@ -1,4 +1,4 @@
-// Page 7
+// Page 8
 import React, { useState } from 'react'
 
 export default function AddItem() {

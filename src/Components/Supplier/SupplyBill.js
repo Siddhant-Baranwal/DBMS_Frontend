@@ -1,10 +1,10 @@
-// Page 15
+// Page 4
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function BuyBill() {
+export default function SupplyBill() {
   const {id} = useParams();
-  const buyers = ['ABETR2414', 'BWRS32452', 'BGSTEG4235', 'OHNF12343', 'IUMEA3524'];
+  const suppliers = ['ABETR2414', 'BWRS32452', 'BGSTEG4235', 'OHNF12343', 'IUMEA3524'];
   const drivers = ['ChintuLal', 'RamPrasad', 'KalluRam', 'MakhanchuLal', 'MunnaSeth'];
   const today = new Date();
   const [form, setForm] = useState({
@@ -14,12 +14,11 @@ export default function BuyBill() {
     order_year: today.getFullYear(),
     driver: '',
     bill: id,
-    amount: 0
   })
 
-  const [currentBuyers, setCurrentBuyers] = useState(buyers);
+  const [currentSuppliers, setCurrentSuppliers] = useState(suppliers);
   const [currentDrivers, setCurrentDrivers] = useState(drivers);
-  const [showDropdownBuyers, setShowDropdownBuyers] = useState(true);
+  const [showDropdownSuppliers, setShowDropdownSuppliers] = useState(true);
   const [showDropdownDrivers, setShowDropdownDrivers] = useState(true);
   
   const navigate = useNavigate();
@@ -33,10 +32,10 @@ export default function BuyBill() {
     const {name, value, type} = e.target;
     if (name === 'gst') {
       const q = (value || '').toUpperCase();
-      const filt = buyers.filter((item) => item.toUpperCase().startsWith(q));
-      setCurrentBuyers(filt);
-      const exactMatch = buyers.some((s) => s.toUpperCase() === q);
-      setShowDropdownBuyers(!exactMatch);
+      const filt = suppliers.filter((item) => item.toUpperCase().startsWith(q));
+      setCurrentSuppliers(filt);
+      const exactMatch = suppliers.some((s) => s.toUpperCase() === q);
+      setShowDropdownSuppliers(!exactMatch);
     }
     if (name === 'driver') {
       const q = (value || '').toUpperCase();
@@ -53,7 +52,7 @@ export default function BuyBill() {
   const selectHandlerSupplier = (e) => {
     const value = e.target.value;
     setForm(prev => ({ ...prev, gst: value }));
-    if (buyers.includes(value)) setShowDropdownBuyers(false);
+    if (suppliers.includes(value)) setShowDropdownSuppliers(false);
   };
 
   const selectHandlerDriver = (e) => {
@@ -71,20 +70,20 @@ export default function BuyBill() {
           <input name='bill' type='number' value={form.bill} readOnly onChange={changeHandler} ></input>
         </div>
         <div>
-          <p>Buyer GST: </p>
+          <p>Supplier GST: </p>
           <input name='gst' value={form.gst} onChange={changeHandler} ></input>
-          {showDropdownBuyers && (
-            <select size={1 + currentBuyers.length} onChange={selectHandlerSupplier} >
+          {showDropdownSuppliers && (
+            <select size={1 + currentSuppliers.length} onChange={selectHandlerSupplier} >
               <option value=''>--Choose a value--</option>
-              {currentBuyers.map((item, index) => {
+              {currentSuppliers.map((item, index) => {
                 return(
                   <option key={index} value={item}>{item}</option>
                 )
               })}
             </select>
           )}
-          {showDropdownBuyers && (
-            <a href='/add/buyer' target='_blank' class='addbutton'>+</a>
+          {showDropdownSuppliers && (
+            <a href='/add/supplier' target='_blank' class='addbutton'>+</a>
           )}
         </div>
         <div>
@@ -112,12 +111,8 @@ export default function BuyBill() {
             <a href='/add/driver' target='_blank' class='addbutton'>+</a>
           )}
         </div>
-        <div>
-          <p>Total amount: </p>
-          <input name='amount' type='number' value={form.amount} readOnly onChange={changeHandler} ></input>
-        </div>
         <button type='submit' disabled={
-          !(buyers.includes(form.gst) && drivers.includes(form.driver))
+          !(suppliers.includes(form.gst) && drivers.includes(form.driver))
         }>Next</button>
       </form>
     </div>
