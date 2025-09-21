@@ -1,23 +1,25 @@
 // Page 7
 import React, { useState } from 'react'
+import axiosInstance from '../../api/axiosInstance';
 
 export default function AddDriver() {
 
   const [form, setForm] = useState({
-    fname: 'test fname',
-    lname: 'test lname',
-    phone: 'test phone',
-    aadhar: 'test aadhar',
-    license: 'test license',
-    city: 'test city',
-    zip: 'test zip',
-    locality: 'test locality',
-    house: 'test house'
+    fname: 'Ram',
+    lname: 'Lal',
+    phone: '1058743453',
+    aadhaar: '9437629850',
+    license: 'UP65VWE8052732547',
+    city: 'Azamgarh',
+    zip: '26206',
+    locality: 'Nizamabad',
+    house: 'Gallamandi'
   })
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(form);
+    const res = await axiosInstance.post('/drivers', form);
+    console.log(res);
   }
 
   const changeHandler = (e) => {
@@ -43,7 +45,7 @@ export default function AddDriver() {
         </div>
         <div className='form-group'>
           <label className='form-label'>Aadhar number:</label>
-          <input name='aadhar' value={form.aadhar} onChange={changeHandler} className='form-input'></input>
+          <input name='aadhaar' value={form.aadhaar} onChange={changeHandler} className='form-input'></input>
         </div>
         <div className='form-group'>
           <label className='form-label'>DL number:</label>

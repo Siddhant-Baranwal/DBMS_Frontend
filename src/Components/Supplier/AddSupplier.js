@@ -1,22 +1,24 @@
 // Page 6
 import React, { useState } from 'react'
+import axiosInstance from '../../api/axiosInstance';
 
 export default function AddSupplier() {
 
   const [form, setForm] = useState({
-    name: 'test name',
-    email: 'test@email',
-    phone: 'test phone',
-    gst: 'test gst',
-    city: 'test city',
-    zip: 'test zip',
-    area: 'test area',
-    building: 'test building'
+    name: 'VK Traders',
+    email: 'vk.traders@gmail.com',
+    phone: '9345792',
+    gst: 'GEHG025972043',
+    city: 'Varanasi',
+    zip: '439857',
+    area: 'Bada Bazaar',
+    building: 'GH-234'
   })
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(form);
+    const res = await axiosInstance.post('/suppliers', form);
+    console.log(res);
   }
 
   const changeHandler = (e) => {
