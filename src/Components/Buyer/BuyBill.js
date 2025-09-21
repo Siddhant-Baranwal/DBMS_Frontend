@@ -1,6 +1,6 @@
 // Page 13
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function BuyBill() {
   const {id} = useParams();
@@ -63,7 +63,10 @@ export default function BuyBill() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Sale Bill Details</h1>
+      <div className="page-header">
+        <h1 className="page-title">Bill {id}:</h1>
+        <Link to="/sales" className="btn btn-secondary">Back</Link>
+      </div>
       <form onSubmit={submitHandler} className='form-container'>
         <div className='form-group'>
           <label className='form-label'>Bill Number:</label>

@@ -239,17 +239,17 @@ body {
   color: var(--text-secondary);
 }
 .data-table tbody tr {
-    transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 .data-table tbody tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 .data-table tbody tr:hover {
   background-color: #F3F4F6; /* Lighter gray */
 }
 .table-row-hover:hover {
-    cursor: pointer;
-    background-color: #E5E7EB; /* Medium gray */
+  cursor: pointer;
+  background-color: #E5E7EB; /* Medium gray */
 }
 
 
@@ -260,33 +260,38 @@ body {
   align-items: center;
 }
 .dropdown-wrapper {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    margin-top: 6px;
-    border-radius: var(--border-radius);
-    background-color: var(--surface-color);
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border-color);
-    padding: 0.5rem;
-    display: flex;
-    align-items: flex-start;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 6px;
+  border-radius: var(--border-radius);
+  background-color: var(--surface-color);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
 }
 .dropdown-select {
-    width: 100%;
-    border: none;
+  width: 100%;
+  border: none;
 }
 .dropdown-select:focus {
-    outline: none;
+  outline: none;
 }
+
 .btn-add {
-    margin-left: 0.5rem;
-    color: var(--secondary-color);
+  text-decoration:none;
+  margin-left: 0.5rem;
+  color: var(--secondary-color);
+  transition: 1s ease;
 }
+
 .btn-add:hover {
-    color: var(--secondary-hover);
+  color: var(--secondary-hover);
+  rotate: 360deg;
 }
 
 /* --- Specific Components --- */
@@ -333,17 +338,17 @@ body {
 }
 
 .btn-link {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    cursor: pointer;
-    text-decoration: none;
-    padding: 0;
-    font-weight: 500;
-    margin-top: 1rem;
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  font-weight: 500;
+  margin-top: 1rem;
 }
 .btn-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .floating-add-btn {
@@ -383,4 +388,40 @@ body {
     margin: 1rem;
     padding: 1.5rem;
   }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.page-header .page-title {
+  margin: 0; /* remove bottom margin, spacing handled by .page-header */
+}
+
+.page-header .btn {
+  font-size: 0.95rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.date-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* space between inputs and slashes */
+}
+
+.form-input-date {
+  width: 4rem; /* adjust as needed */
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  text-align: center;
+}
+
+.form-input-date.year {
+  width: 6rem; /* wider for year */
 }

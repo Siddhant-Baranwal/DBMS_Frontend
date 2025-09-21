@@ -1,5 +1,6 @@
 // Page 9
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function LoansTaken() {
 
@@ -113,7 +114,10 @@ export default function LoansTaken() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Loans Taken</h1>
+      <div className="page-header">
+        <h1 className="page-title">Loans taken</h1>
+        <Link to="/" className="btn btn-secondary">Home</Link>
+      </div>
       <div className='action-bar'>
         <button onClick={orderByDate} className='btn btn-secondary'>Order by date</button>
         <button onClick={orderByGST} className='btn btn-secondary'>Order by supplier</button>

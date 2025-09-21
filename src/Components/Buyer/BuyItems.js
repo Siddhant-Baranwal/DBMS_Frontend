@@ -1,6 +1,6 @@
 // Page 14
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 export default function BuyItems() {
   const {id} = useParams();
@@ -135,7 +135,10 @@ export default function BuyItems() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Bill number : {id}</h1>
+      <div className="page-header">
+        <h1 className="page-title">Bill {id}:</h1>
+        <Link to="/sales" className="btn btn-secondary">Save</Link>
+      </div>
       <div className='table-wrapper'>
         <table className='data-table'>
           <thead>

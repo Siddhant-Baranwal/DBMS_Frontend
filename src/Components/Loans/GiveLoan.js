@@ -47,7 +47,7 @@ export default function GiveLoan() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Give a New Loan</h1>
+      <h1 className="page-title">Give a New Loan</h1>
       <form onSubmit={submitHandler} className='form-container'>
         <div className='form-group'>
           <label className='form-label'>Buyer GST:</label>

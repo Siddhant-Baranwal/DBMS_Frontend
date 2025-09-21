@@ -89,7 +89,10 @@ export default function PurchaseBook() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Purchase Book</h1>
+          <div className="page-header">
+            <h1 className="page-title">Purchase book</h1>
+            <Link to="/" className="btn btn-secondary">Home</Link>
+          </div>
       <form onSubmit={submitHandler} className='filter-form'>
         <div className='form-group'>
           <label className='form-label'>From:</label>
