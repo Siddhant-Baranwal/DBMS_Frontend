@@ -1,6 +1,7 @@
 // Page 4
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 export default function SupplyBill() {
 
@@ -9,44 +10,45 @@ export default function SupplyBill() {
   }, []);
 
   const {id} = useParams();
-  const suppliers = ['ABETR2414', 'BWRS32452', 'BGSTEG4235', 'OHNF12343', 'IUMEA3524'];
-  const drivers = ['ChintuLal', 'RamPrasad', 'KalluRam', 'MakhanchuLal', 'MunnaSeth'];
+  const suppliers = ['GVOWSIJ90843578', 'OGWI839423', 'BGSTEG4235', 'OHNF12343', 'IUMEA3524'];
+  const carriers = ['UP50AB98w57254', 'RamPrasad', 'KalluRam', 'MakhanchuLal', 'MunnaSeth'];
   const today = new Date();
   const [form, setForm] = useState({
-    gst: '',
+    provider: '',
     order_day: today.getDate(),
     order_month: today.getMonth(),
     order_year: today.getFullYear(),
-    driver: '',
-    bill: id,
+    carrier: '',
+    bill_number: id,
   })
 
   const [currentSuppliers, setCurrentSuppliers] = useState(suppliers);
-  const [currentDrivers, setCurrentDrivers] = useState(drivers);
+  const [currentDrivers, setCurrentDrivers] = useState(carriers);
   const [showDropdownSuppliers, setShowDropdownSuppliers] = useState(true);
   const [showDropdownDrivers, setShowDropdownDrivers] = useState(true);
   
   const navigate = useNavigate();
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(form);
+    const res = await axiosInstance.post('/purchase-book', form);
+    console.log(res);
     navigate(`/purchase/items/${id}`);
   }
 
   const changeHandler = (e) => {
     const {name, value, type} = e.target;
-    if (name === 'gst') {
+    if (name === 'provider') {
       const q = (value || '').toUpperCase();
       const filt = suppliers.filter((item) => item.toUpperCase().startsWith(q));
       setCurrentSuppliers(filt);
       const exactMatch = suppliers.some((s) => s.toUpperCase() === q);
       setShowDropdownSuppliers(!exactMatch);
     }
-    if (name === 'driver') {
+    if (name === 'carrier') {
       const q = (value || '').toUpperCase();
-      const filt = drivers.filter((item) => item.toUpperCase().startsWith(q));
+      const filt = carriers.filter((item) => item.toUpperCase().startsWith(q));
       setCurrentDrivers(filt);
-      const exactMatch = drivers.some((d) => d.toUpperCase() === q);
+      const exactMatch = carriers.some((d) => d.toUpperCase() === q);
       setShowDropdownDrivers(!exactMatch);
     }
     setForm(prev => ({
@@ -56,14 +58,14 @@ export default function SupplyBill() {
 
   const selectHandlerSupplier = (e) => {
     const value = e.target.value;
-    setForm(prev => ({ ...prev, gst: value }));
+    setForm(prev => ({ ...prev, provider: value }));
     if (suppliers.includes(value)) setShowDropdownSuppliers(false);
   };
 
   const selectHandlerDriver = (e) => {
     const value = e.target.value;
-    setForm(prev => ({ ...prev, driver: value }));
-    if (drivers.includes(value)) setShowDropdownDrivers(false);
+    setForm(prev => ({ ...prev, carrier: value }));
+    if (carriers.includes(value)) setShowDropdownDrivers(false);
   };
 
   return (
@@ -75,12 +77,12 @@ export default function SupplyBill() {
       <form onSubmit={submitHandler} className='form-container'>
         <div className='form-group'>
           <label className='form-label'>Bill Number:</label>
-          <input name='bill' type='number' value={form.bill} readOnly onChange={changeHandler} className='form-input'></input>
+          <input name='bill_number' type='number' value={form.bill_number} readOnly onChange={changeHandler} className='form-input'></input>
         </div>
         <div className='form-group'>
           <label className='form-label'>Supplier GST:</label>
           <div className='input-with-select'>
-              <input name='gst' value={form.gst} onChange={changeHandler} className='form-input'></input>
+              <input name='provider' value={form.provider} onChange={changeHandler} className='form-input'></input>
               {showDropdownSuppliers && (
                 <div className='dropdown-wrapper'>
                     <select size={1 + currentSuppliers.length} onChange={selectHandlerSupplier} className='dropdown-select'>
@@ -109,7 +111,7 @@ export default function SupplyBill() {
         <div className='form-group'>
           <label className='form-label'>Driver license:</label>
           <div className='input-with-select'>
-              <input name='driver' value={form.driver} onChange={changeHandler} className='form-input'></input>
+              <input name='carrier' value={form.carrier} onChange={changeHandler} className='form-input'></input>
               {showDropdownDrivers && (
                 <div className='dropdown-wrapper'>
                     <select size={1 + currentDrivers.length} onChange={selectHandlerDriver} className='dropdown-select'>
@@ -120,13 +122,13 @@ export default function SupplyBill() {
                         )
                       })}
                     </select>
-                    <a href='/add/driver' target='_blank' className='btn-icon btn-add'>+</a>
+                    <a href='/add/carrier' target='_blank' className='btn-icon btn-add'>+</a>
                 </div>
               )}
           </div>
         </div>
         <button type='submit' disabled={
-          !(suppliers.includes(form.gst) && drivers.includes(form.driver))
+          !(suppliers.includes(form.provider) && carriers.includes(form.carrier))
         } className='btn btn-primary'>Next</button>
       </form>
     </div>
