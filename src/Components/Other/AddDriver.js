@@ -1,8 +1,13 @@
 // Page 7
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance';
 
 export default function AddDriver() {
+
+  useEffect(() => {
+    document.title = 'Add driver';
+  }, []);
+
 
   const [form, setForm] = useState({
     fname: 'Ram',

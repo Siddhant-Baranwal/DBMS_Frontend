@@ -1,8 +1,13 @@
 // Page 5
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 export default function SupplyItems() {
+
+  useEffect(() => {
+    document.title = 'Invoice list';
+  }, []);
+
   const {id} = useParams();
   const [allItems, setAllItems] = useState([
     {

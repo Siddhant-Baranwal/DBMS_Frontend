@@ -1,8 +1,13 @@
 // Page 10
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 export default function GiveLoan() {
+
+  useEffect(() => {
+    document.title = 'Give loan';
+  }, []);
+
   const buyers = ['ABS1242', 'ABC234', 'TE241532', 'GWEE234'];
   const [currentBuyers, setCurrentBuyers] = useState(buyers);
   const today = new Date();

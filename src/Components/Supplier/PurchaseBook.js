@@ -1,8 +1,13 @@
 // Page 2
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function PurchaseBook() {
+
+  useEffect(() => {
+    document.title = 'Purchase book';
+  }, []);
+
   const [purchases, setPurchases] = useState([
     {
       bill_number: 1,

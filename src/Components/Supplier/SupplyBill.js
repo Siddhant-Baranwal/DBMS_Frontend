@@ -1,8 +1,13 @@
 // Page 4
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function SupplyBill() {
+
+  useEffect(() => {
+    document.title = 'Invoice details';
+  }, []);
+
   const {id} = useParams();
   const suppliers = ['ABETR2414', 'BWRS32452', 'BGSTEG4235', 'OHNF12343', 'IUMEA3524'];
   const drivers = ['ChintuLal', 'RamPrasad', 'KalluRam', 'MakhanchuLal', 'MunnaSeth'];

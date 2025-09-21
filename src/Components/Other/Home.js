@@ -1,8 +1,13 @@
 // Page 1
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
+
+  useEffect(() => {
+    document.title = 'Welcome';
+  }, []);
+
   return (
     <div className='page-container animate-fade-in'>
         <h1 className='page-title' >Welcome to the Dashboard</h1>

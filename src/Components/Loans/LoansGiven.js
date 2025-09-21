@@ -1,8 +1,13 @@
 // Page 10
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function LoansGiven() {
+
+  useEffect(() => {
+    document.title = 'Loans given';
+  }, []);
+
 
   const [loans, setLoans] = useState([
     {

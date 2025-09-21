@@ -1,8 +1,13 @@
 // Page 8
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosInstance';
 
 export default function AddItem() {
+
+  useEffect(() => {
+    document.title = 'Add item';
+  }, []);
+
 
   const [form, setForm] = useState({
     name: 'Glucon-D',

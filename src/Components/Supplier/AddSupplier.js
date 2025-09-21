@@ -1,8 +1,13 @@
 // Page 6
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance';
 
 export default function AddSupplier() {
+
+  useEffect(() => {
+    document.title = 'Add supplier';
+  }, []);
+
 
   const [form, setForm] = useState({
     name: 'VK Traders',

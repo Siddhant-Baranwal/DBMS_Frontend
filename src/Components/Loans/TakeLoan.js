@@ -1,8 +1,13 @@
 // Page 11
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 export default function TakeLoan() {
+
+  useEffect(() => {
+    document.title = 'Take loan';
+  }, []);
+
   const navigate = useNavigate();
   const suppliers = ['ABS1242', 'ABC234', 'TE241532', 'GWEE234'];
   const [currentSuppliers, setCurrentSuppliers] = useState(suppliers);
