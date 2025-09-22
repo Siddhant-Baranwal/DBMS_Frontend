@@ -1,12 +1,9 @@
 // Page 14
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import axiosInstance from '../../api/axiosInstance';
 
 export default function BuyItems() {
-
-  useEffect(() => {
-    document.title = 'Invoice items';
-  }, []);
 
   const {id} = useParams();
   const [allItems, setAllItems] = useState([
@@ -136,7 +133,23 @@ export default function BuyItems() {
     setSearchName('');
     // Add the entry of bill id, item id, discount, quantity to the sales list.
     console.log(selectedItem.name, selectedItem.itemid, Number(selDiscount), Number(selQuantity));
-  }
+  }  
+  
+  useEffect(() => {
+    document.title = 'Invoice list';
+
+    const fetchItems = async () => {
+      try {
+        const response = await axiosInstance.get('/items/all');
+        setAllItems(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   return (
     <div className='page-container animate-fade-in'>
