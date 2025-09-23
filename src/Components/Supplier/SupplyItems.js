@@ -186,6 +186,7 @@ export default function SupplyItems() {
                     <th>Weight</th>
                     <th>Company</th>
                     <th>Price</th>
+                    <th>Stock</th>
                     <th>MRP</th>
                     <th>Tax</th>
                   </tr>
@@ -198,6 +199,7 @@ export default function SupplyItems() {
                       <td>{it.weight}</td>
                       <td>{it.company}</td>
                       <td>{it.price}</td>
+                      <td>{it.stock}</td>
                       <td>{it.mrp}</td>
                       <td>{it.tax}</td>
                     </tr>
