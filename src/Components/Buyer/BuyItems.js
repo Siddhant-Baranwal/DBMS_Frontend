@@ -221,7 +221,7 @@ export default function BuyItems() {
                   type='number'
                   min='1'
                   value={selQuantity}
-                  onChange={(e) => setSelQuantity(Number(e.target.value))}
+                  onChange={(e) => setSelQuantity(e.target.value)}
                 />
               </div>
 
