@@ -23,6 +23,7 @@ export default function AddSupplier() {
   const submitHandler = async (e) => {
     e.preventDefault();
     const res = await axiosInstance.post('/suppliers', form);
+    window.close();
     console.log(res);
   }
 

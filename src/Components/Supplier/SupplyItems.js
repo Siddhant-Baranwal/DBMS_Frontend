@@ -8,9 +8,24 @@ export default function SupplyItems() {
   const [allItems, setAllItems] = useState([])
   const [items, setItems] = useState([]);
 
-  const deleteHandler = (itemid) => {
-    // delete purchase list having bill id id and item id itemid. Then setItems(get the new items)
+  const deleteHandler = async (itemid) => {
+    const req = await axiosInstance.delete(`/purchaselist/delete/${id}/${itemid}`);
+    // console.log(req);
     console.log(itemid);
+    const response = await axiosInstance.get(`/purchaselist/all/${id}`);
+    console.log(response);
+    const curItems = response.data.map(element => ({
+      name: element[0],
+      weight: element[1],
+      company: element[2],
+      mrp: element[3],
+      price: element[4],
+      quantity: element[5],
+      discount: element[6],
+      id: element[7]
+    }));
+    console.log(curItems);
+    setItems(curItems);
   }
 
   const totalAmount = items.reduce((sum, each) => {
@@ -57,6 +72,20 @@ export default function SupplyItems() {
     // console.log()
     console.log(req);
     console.log(res);
+    const response = await axiosInstance.get(`/purchaselist/all/${id}`);
+    console.log(response);
+    const curItems = response.data.map(element => ({
+      name: element[0],
+      weight: element[1],
+      company: element[2],
+      mrp: element[3],
+      price: element[4],
+      quantity: element[5],
+      discount: element[6],
+      id: element[7]
+    }));
+    console.log(curItems);
+    setItems(curItems);
   }
 
   useEffect(() => {
@@ -67,6 +96,21 @@ export default function SupplyItems() {
         const response = await axiosInstance.get('/items/all');
         setAllItems(response.data);
         console.log(response.data);
+        const res = await axiosInstance.get(`/purchaselist/all/${id}`);
+        console.log(res);
+        const curItems = res.data.map(element => ({
+          name: element[0],
+          weight: element[1],
+          company: element[2],
+          mrp: element[3],
+          price: element[4],
+          quantity: element[5],
+          discount: element[6],
+          id: element[7]
+        }));
+        console.log(curItems);
+        setItems(curItems);
+
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -112,7 +156,7 @@ export default function SupplyItems() {
                 <td>{each.quantity}</td>
                 <td>{each.discount}</td>
                 <td>{(each.quantity * each.price * (100 - each.discount)/100).toFixed(2)}</td>
-                <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(each.itemid)}>&#128465;</button></td>
+                <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(each.id)}>&#128465;</button></td>
               </tr>
             )
           })}

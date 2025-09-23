@@ -22,6 +22,7 @@ export default function AddItem() {
   const submitHandler = async (e) => {
     e.preventDefault();
     const res = await axiosInstance.post('/items', form);
+    window.close();
     console.log(res);
   }
 

@@ -1,17 +1,31 @@
-// Page 14
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance';
 
 export default function BuyItems() {
 
-  const {id} = useParams();
-  const [allItems, setAllItems] = useState([])
+  const { id } = useParams();
+  const [allItems, setAllItems] = useState([]);
   const [items, setItems] = useState([]);
 
-  const deleteHandler = (itemid) => {
-    // delete sales list having bill id id and item id itemid. Then setItems(get the new items)
-    console.log(itemid);
+  const deleteHandler = async (itemid) => {
+    try {
+      await axiosInstance.delete(`/saleslist/delete/${id}/${itemid}`);
+      const response = await axiosInstance.get(`/saleslist/all/${id}`);
+      const curItems = Array.isArray(response.data) ? response.data.map(element => ({
+        name: element[0],
+        weight: element[1],
+        company: element[2],
+        mrp: element[3],
+        price: element[4],
+        quantity: element[5],
+        discount: element[6],
+        id: element[7]
+      })) : [];
+      setItems(curItems);
+    } catch (err) {
+      console.error('Failed to delete or reload sales list:', err);
+    }
   }
 
   const totalAmount = items.reduce((sum, each) => {
@@ -26,7 +40,7 @@ export default function BuyItems() {
   const [selQuantity, setSelQuantity] = useState(1);
   const [selDiscount, setSelDiscount] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const q = (searchName || '').trim().toLowerCase();
     if (q === '') {
       setFilteredItems(allItems);
@@ -45,21 +59,40 @@ export default function BuyItems() {
     if (!selectedItem) return;
     setSelectedItem(null);
     setSearchName('');
-    // Add the entry of bill id, item id, discount, quantity to the purchase list.
     const req = {
       bill_number: id,
       item_id: selectedItem.id,
-      discount: selDiscount,
-      quantity: selQuantity
+      discount: Number(selDiscount),
+      quantity: Number(selQuantity)
     };
-    console.log("Input: ", selectedItem.name, selectedItem.id, Number(selDiscount), Number(selQuantity));
-    console.log(selectedItem);
-    const res = await axiosInstance.post('/saleslist/add', req);
-    // console.log()
-    console.log(req);
-    console.log(res);
+    try {
+      const res = await axiosInstance.post('/saleslist/add', req);      
+      console.log(res);
+      const response = await axiosInstance.get(`/saleslist/all/${id}`);
+      const curItems = Array.isArray(response.data) ? response.data.map(element => ({
+        name: element[0],
+        weight: element[1],
+        company: element[2],
+        mrp: element[3],
+        price: element[4],
+        quantity: element[5],
+        discount: element[6],
+        id: element[7]
+      })) : [];
+      setItems(curItems);
+    } catch (err) {
+      if(err.response){
+        if(err.response.status === 500){
+          alert('Not enough stock available.');
+        }
+        else{
+          alert(`Server error: ${err.response.status} - ${err.response.data?.message || ''}`);
+        }
+      }
+      console.error('Failed to add item to sales list or reload:', err);
+    }
   }
-  
+
   useEffect(() => {
     document.title = 'Invoice list';
 
@@ -67,14 +100,25 @@ export default function BuyItems() {
       try {
         const response = await axiosInstance.get('/items/all');
         setAllItems(response.data);
-        console.log(response.data);
+        const res = await axiosInstance.get(`/saleslist/all/${id}`);
+        const curItems = Array.isArray(res.data) ? res.data.map(element => ({
+          name: element[0],
+          weight: element[1],
+          company: element[2],
+          mrp: element[3],
+          price: element[4],
+          quantity: element[5],
+          discount: element[6],
+          id: element[7]
+        })) : [];
+        setItems(curItems);
       } catch (error) {
-        console.error("Error fetching items:", error);
+        console.error("Error fetching items or sales list:", error);
       }
     };
 
     fetchItems();
-  }, []);
+  }, [id]);
 
   return (
     <div className='page-container animate-fade-in'>
@@ -99,23 +143,22 @@ export default function BuyItems() {
             </tr>
           </thead>
           <tbody>
-          {items.map((each, index) => {
-            // console.log(each);
-            return (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{each.name}</td>
-                <td>{each.weight}</td>
-                <td>{each.company}</td>
-                <td>{each.mrp}</td>
-                <td>{each.price}</td>
-                <td>{each.quantity}</td>
-                <td>{each.discount}</td>
-                <td>{(each.quantity * each.price * (100 - each.discount)/100).toFixed(2)}</td>
-                <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(each.itemid)}>&#128465;</button></td>
-              </tr>
-            )
-          })}
+            {items.map((each, index) => {
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{each.name}</td>
+                  <td>{each.weight}</td>
+                  <td>{each.company}</td>
+                  <td>{each.mrp}</td>
+                  <td>{each.price}</td>
+                  <td>{each.quantity}</td>
+                  <td>{each.discount}</td>
+                  <td>{(each.quantity * each.price * (100 - each.discount) / 100).toFixed(2)}</td>
+                  <td><button className='btn-icon btn-delete' onClick={() => deleteHandler(each.id)}>&#128465;</button></td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -130,7 +173,7 @@ export default function BuyItems() {
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               placeholder='Type item name'
-              />
+            />
           </div>
 
           <div className='table-wrapper search-results'>
@@ -178,7 +221,7 @@ export default function BuyItems() {
                   type='number'
                   min='1'
                   value={selQuantity}
-                  onChange={(e) => setSelQuantity(e.target.value)}
+                  onChange={(e) => setSelQuantity(Number(e.target.value))}
                 />
               </div>
 

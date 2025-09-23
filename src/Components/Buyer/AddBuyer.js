@@ -23,6 +23,7 @@ export default function AddBuyer() {
   const submitHandler = async (e) => {
     e.preventDefault();
     const res = await axiosInstance.post('/buyers', form);
+    window.close();
     console.log(res);
   }
 

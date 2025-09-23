@@ -24,6 +24,7 @@ export default function AddDriver() {
   const submitHandler = async (e) => {
     e.preventDefault();
     const res = await axiosInstance.post('/drivers', form);
+    window.close();
     console.log(res);
   }
 
