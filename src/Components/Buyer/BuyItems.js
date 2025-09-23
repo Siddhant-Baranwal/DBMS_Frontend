@@ -6,94 +6,8 @@ import axiosInstance from '../../api/axiosInstance';
 export default function BuyItems() {
 
   const {id} = useParams();
-  const [allItems, setAllItems] = useState([
-    {
-      itemid: 1,
-      tax: 5,
-      company: 'Hoesigh',
-      available: 0,
-      price: 23,
-      mrp: 30,
-      name: 'Zandu Aohe',
-      weight: '100gm'
-    },
-    {
-      itemid: 2,
-      tax: 5,
-      company: 'HUL',
-      available: 0,
-      price: 2.85,
-      mrp: 3,
-      name: 'Shampoo',
-      weight: '2ml'
-    },
-    {
-      itemid: 3,
-      tax: 5,
-      company: 'Zydus Wellness',
-      available: 0,
-      price: 243,
-      mrp: 300,
-      name: 'Zandu Chyawanprash',
-      weight: '1kg'
-    },
-    {
-      itemid: 4,
-      tax: 12,
-      company: 'Johnson & Johnson',
-      available: 0,
-      price: 243,
-      mrp: 300,
-      name: 'Johnson Baby Powder',
-      weight: '200gm'
-    }
-  ])
-  const [items, setItems] = useState([
-    {
-      name: 'Glucon-D',
-      weight: '100gm',
-      price: 38,
-      quantity: 3,
-      discount: 10,
-      company: 'HUL',
-      itemid: 32,
-      mrp: 50,
-      tax: 12
-    },
-    {
-      name: 'Glucon-D',
-      weight: '1kg',
-      price: 480,
-      quantity: 3,
-      discount: 15,
-      company: 'HUL',
-      itemid: 23,
-      mrp: 500,
-      tax: 12
-    },
-    {
-      name: 'Glucon-D',
-      weight: '500gm',
-      price: 197,
-      quantity: 3,
-      discount: 17,
-      company: 'HUL',
-      itemid: 3,
-      mrp: 240,
-      tax: 12
-    },
-    {
-      name: 'Glucon-D',
-      weight: '200gm',
-      price: 80,
-      quantity: 3,
-      discount: 10,
-      company: 'HUL',
-      itemid: 2,
-      mrp: 100,
-      tax: 12
-    }
-  ]);
+  const [allItems, setAllItems] = useState([])
+  const [items, setItems] = useState([]);
 
   const deleteHandler = (itemid) => {
     // delete sales list having bill id id and item id itemid. Then setItems(get the new items)
@@ -127,13 +41,24 @@ export default function BuyItems() {
     setSelDiscount(0);
   }
 
-  const onAddClick = () => {
+  const onAddClick = async () => {
     if (!selectedItem) return;
     setSelectedItem(null);
     setSearchName('');
-    // Add the entry of bill id, item id, discount, quantity to the sales list.
-    console.log(selectedItem.name, selectedItem.itemid, Number(selDiscount), Number(selQuantity));
-  }  
+    // Add the entry of bill id, item id, discount, quantity to the purchase list.
+    const req = {
+      bill_number: id,
+      item_id: selectedItem.id,
+      discount: selDiscount,
+      quantity: selQuantity
+    };
+    console.log("Input: ", selectedItem.name, selectedItem.id, Number(selDiscount), Number(selQuantity));
+    console.log(selectedItem);
+    const res = await axiosInstance.post('/saleslist/add', req);
+    // console.log()
+    console.log(req);
+    console.log(res);
+  }
   
   useEffect(() => {
     document.title = 'Invoice list';
@@ -217,6 +142,7 @@ export default function BuyItems() {
                   <th>Weight</th>
                   <th>Company</th>
                   <th>Price</th>
+                  <th>Stock</th>
                   <th>MRP</th>
                   <th>Tax</th>
                 </tr>
@@ -229,6 +155,7 @@ export default function BuyItems() {
                     <td>{it.weight}</td>
                     <td>{it.company}</td>
                     <td>{it.price}</td>
+                    <td>{it.stock}</td>
                     <td>{it.mrp}</td>
                     <td>{it.tax}</td>
                   </tr>

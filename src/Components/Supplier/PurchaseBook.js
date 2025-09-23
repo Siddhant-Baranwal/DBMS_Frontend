@@ -1,6 +1,7 @@
 // Page 2
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 export default function PurchaseBook() {
 
@@ -8,83 +9,55 @@ export default function PurchaseBook() {
     document.title = 'Purchase book';
   }, []);
 
-  const [purchases, setPurchases] = useState([
-    {
-      bill_number: 1,
-      order_day: 23,
-      order_month: 9,
-      order_year: 2025,
-      carrier: 'Chintu Prasad',
-      provider: 'MAN420786'
-    },
-    {
-      bill_number: 2,
-      order_day: 23,
-      order_month: 9,
-      order_year: 2025,
-      carrier: 'Chintu Prasad',
-      provider: 'MAN420786'
-    },
-    {
-      bill_number: 3,
-      order_day: 23,
-      order_month: 9,
-      order_year: 2025,
-      carrier: 'Chintu Prasad',
-      provider: 'MAN420786'
-    },
-    {
-      bill_number: 4,
-      order_day: 23,
-      order_month: 9,
-      order_year: 2025,
-      carrier: 'Chintu Prasad',
-      provider: 'MAN420786'
-    }
-  ]);
+  const [purchases, setPurchases] = useState([]);
   const [form, setForm] = useState({
     start_date: '2000-01-01',
-    end_date: '2025-01-01',
+    end_date: '2025-12-31',
     gst: ''
   })
   
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(form);
-    setPurchases([
-      {
-        bill_number: 1,
-        order_day: 1 + Math.floor(Math.random() * 30),
-        order_month: 1 + Math.floor(Math.random() * 12),
-        order_year: 2000 + Math.floor(Math.random() * 26),
-        carrier: 'Chintu Prasad',
-        provider: 'MAN23554'
-      },
-      {
-        bill_number: 2,
-        order_day: 1 + Math.floor(Math.random() * 30),
-        order_month: 1 + Math.floor(Math.random() * 12),
-        order_year: 2000 + Math.floor(Math.random() * 26),
-        carrier: 'Chintu Prasad',
-        provider: 'MAN23554'
-      },
-      {
-        bill_number: 3,
-        order_day: 1 + Math.floor(Math.random() * 30),
-        order_month: 1 + Math.floor(Math.random() * 12),
-        order_year: 2000 + Math.floor(Math.random() * 26),
-        carrier: 'Chintu Prasad',
-        provider: 'MAN23554'
-      },
-      {
-        bill_number: 4,
-        order_day: 1 + Math.floor(Math.random() * 30),
-        order_month: 1 + Math.floor(Math.random() * 12),
-        order_year: 2000 + Math.floor(Math.random() * 26),
-        carrier: 'Chintu Prasad',
-        provider: 'MAN23554'
-      }
-    ])
+    // setPurchases([
+    //   {
+    //     bill_number: 1,
+    //     order_day: 1 + Math.floor(Math.random() * 30),
+    //     order_month: 1 + Math.floor(Math.random() * 12),
+    //     order_year: 2000 + Math.floor(Math.random() * 26),
+    //     carrier: 'Chintu Prasad',
+    //     provider: 'MAN23554'
+    //   },
+    //   {
+    //     bill_number: 2,
+    //     order_day: 1 + Math.floor(Math.random() * 30),
+    //     order_month: 1 + Math.floor(Math.random() * 12),
+    //     order_year: 2000 + Math.floor(Math.random() * 26),
+    //     carrier: 'Chintu Prasad',
+    //     provider: 'MAN23554'
+    //   },
+    //   {
+    //     bill_number: 3,
+    //     order_day: 1 + Math.floor(Math.random() * 30),
+    //     order_month: 1 + Math.floor(Math.random() * 12),
+    //     order_year: 2000 + Math.floor(Math.random() * 26),
+    //     carrier: 'Chintu Prasad',
+    //     provider: 'MAN23554'
+    //   },
+    //   {
+    //     bill_number: 4,
+    //     order_day: 1 + Math.floor(Math.random() * 30),
+    //     order_month: 1 + Math.floor(Math.random() * 12),
+    //     order_year: 2000 + Math.floor(Math.random() * 26),
+    //     carrier: 'Chintu Prasad',
+    //     provider: 'MAN23554'
+    //   }
+    // ])
+    const api = `/purchase-book/search?start_date=${form.start_date}&end_date=${form.end_date}&gst=${form.gst}`;
+    // console.log(api);
+    const res = await axiosInstance.get(api);
+    // console.log(res.data);
+    setPurchases(res.data);
   }
 
   const changeHandler = (e) => {

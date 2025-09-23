@@ -168,7 +168,7 @@ export default function SupplyBill() {
         )
       })}
       </select>
-      <a href='/add/carrier' target='_blank' className='btn-icon btn-add'>+</a>
+      <a href='/add/driver' target='_blank' className='btn-icon btn-add'>+</a>
       </div>
     )}
     </div>

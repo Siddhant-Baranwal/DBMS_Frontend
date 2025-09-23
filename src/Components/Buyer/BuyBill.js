@@ -178,7 +178,7 @@ export default function BuyBill() {
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
-                <a href='/add/carrier' target='_blank' rel='noreferrer' className='btn-icon btn-add'>+</a>
+                <a href='/add/driver' target='_blank' rel='noreferrer' className='btn-icon btn-add'>+</a>
               </div>
             )}
           </div>
