@@ -47,12 +47,11 @@ export default function LoansTaken() {
   };
 
   const deleteHandler = async (id, gst) => {
-    try {
-      await axiosInstance.delete(`/loanstaken/${id}/${gst}`);
-      setLoans(prev => prev.filter(loan => !(loan.Id === id && loan.gstNumber === gst)));
-    } catch (err) {
-      console.error('Failed to delete loan:', err);
-    }
+    console.log(`Delete loan with id: ${id} and gst: ${gst}`);
+    const res = await axiosInstance.delete(`/loanstaken/del/${gst}/${id}`);
+    console.log(res);
+    const newLoans = await axiosInstance.get('/loanstaken/all');
+    setLoans(newLoans.data);
   };
 
   return (
@@ -65,7 +64,7 @@ export default function LoansTaken() {
         <button onClick={orderByDate} className='btn btn-secondary'>Order by date</button>
         <button onClick={orderByGST} className='btn btn-secondary'>Order by supplier</button>
         <button onClick={reloadHandler} className='btn btn-secondary'>Reload</button>
-        <a href='/add/loanstaken' target='_blank' className='btn btn-primary'>Take a new loan</a>
+        <Link to='/add/loanstaken' className='btn btn-primary'>Take a new loan</Link>
       </div>
       <div className='table-wrapper'>
         <table className='data-table'>
@@ -88,7 +87,7 @@ export default function LoansTaken() {
                 <td>{item.day}/{item.month}/{item.year}</td>
                 <td>{item.duration}</td>
                 <td>
-                  <button className='btn-icon btn-delete' onClick={() => deleteHandler(item.Id, item.gstNumber)}>
+                  <button className='btn-icon btn-delete' onClick={() => deleteHandler(item.id, item.gstNumber)}>
                     &#128465;
                   </button>
                 </td>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 
 export default function TakeLoan() {
@@ -77,7 +77,10 @@ export default function TakeLoan() {
 
   return (
     <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Take a New Loan</h1>
+      <div className="page-header">
+        <h1 className="page-title">Take a new loan</h1>
+        <Link to="/loans/taken" className="btn btn-secondary">Back</Link>
+      </div>
       <form onSubmit={submitHandler} className='form-container'>
         <div className='form-group'>
           <label className='form-label'>Supplier GST:</label>

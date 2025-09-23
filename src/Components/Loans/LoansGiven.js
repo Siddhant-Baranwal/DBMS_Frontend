@@ -46,8 +46,12 @@ export default function LoansGiven() {
     }
   };
 
-  const deleteHandler = (id) => {
-    console.log('Delete loan with id:', id);
+  const deleteHandler = async (id, gst) => {
+    console.log(`Delete loan with id: ${id} and gst: ${gst}`);
+    const res = await axiosInstance.delete(`/loansgiven/del/${gst}/${id}`);
+    console.log(res);
+    const newLoans = await axiosInstance.get('/loansgiven/all');
+    setLoans(newLoans.data);
   };
 
   return (
@@ -60,7 +64,7 @@ export default function LoansGiven() {
         <button onClick={orderByDate} className='btn btn-secondary'>Order by date</button>
         <button onClick={orderByGST} className='btn btn-secondary'>Order by buyer</button>
         <button onClick={reloadHandler} className='btn btn-secondary'>Reload</button>
-        <a href='/add/loansgiven' target='_blank' className='btn btn-primary'>Give a new loan</a>
+        <Link to='/add/loansgiven' className='btn btn-primary'>Give a new loan</Link>
       </div>
       <div className='table-wrapper'>
         <table className='data-table'>
