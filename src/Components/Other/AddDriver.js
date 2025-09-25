@@ -1,79 +1,79 @@
-// Page 7
 import React, { useEffect, useState } from 'react'
-import axiosInstance from '../../api/axiosInstance';
+import axiosInstance from '../../api/axiosInstance'
 
 export default function AddDriver() {
-
   useEffect(() => {
-    document.title = 'Add driver';
-  }, []);
-
+    document.title = 'Add driver'
+  }, [])
 
   const [form, setForm] = useState({
-    fname: 'Ram',
-    lname: 'Lal',
-    phone: '1058743453',
-    aadhaar: '9437629850',
-    license: 'UP65VWE8052732547',
-    city: 'Azamgarh',
-    zip: '26206',
-    locality: 'Nizamabad',
-    house: 'Gallamandi'
+    fname: '',
+    lname: '',
+    phone: '',
+    aadhaar: '',
+    license: '',
+    city: '',
+    zip: '',
+    locality: '',
+    house: ''
   })
 
   const submitHandler = async (e) => {
-    e.preventDefault();
-    const res = await axiosInstance.post('/drivers', form);
-    window.close();
-    console.log(res);
+    e.preventDefault()
+    try {
+      await axiosInstance.post('/drivers', form)
+      window.close()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const changeHandler = (e) => {
-    const {name, value} = e.target;
-    setForm(prev => ({...prev, [name]: value}))
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
   }
 
   return (
-    <div className='page-container animate-fade-in'>
-      <h1 className='page-title'>Add a New Driver</h1>
-      <form onSubmit={submitHandler} className='form-container'>
-        <div className='form-group'>
-          <label className='form-label'>First name:</label>
-          <input name='fname' value={form.fname} onChange={changeHandler} className='form-input'></input>
+    <div className="page-container animate-fade-in">
+      <h1 className="page-title">Add a New Driver</h1>
+      <form onSubmit={submitHandler} className="form-container">
+        <div className="form-group">
+          <label className="form-label">First name:</label>
+          <input name="fname" value={form.fname} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>Last name:</label>
-          <input name='lname' value={form.lname} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">Last name:</label>
+          <input name="lname" value={form.lname} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>Phone number:</label>
-          <input name='phone' value={form.phone} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">Phone number:</label>
+          <input name="phone" value={form.phone} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>Aadhar number:</label>
-          <input name='aadhaar' value={form.aadhaar} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">Aadhar number:</label>
+          <input name="aadhaar" value={form.aadhaar} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>DL number:</label>
-          <input name='license' value={form.license} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">DL number:</label>
+          <input name="license" value={form.license} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>City:</label>
-          <input name='city' value={form.city} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">City:</label>
+          <input name="city" value={form.city} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>Zip code:</label>
-          <input name='zip' value={form.zip} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">Zip code:</label>
+          <input name="zip" value={form.zip} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>Locality:</label>
-          <input name='locality' value={form.locality} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">Locality:</label>
+          <input name="locality" value={form.locality} onChange={changeHandler} className="form-input" />
         </div>
-        <div className='form-group'>
-          <label className='form-label'>House number:</label>
-          <input name='house' value={form.house} onChange={changeHandler} className='form-input'></input>
+        <div className="form-group">
+          <label className="form-label">House number:</label>
+          <input name="house" value={form.house} onChange={changeHandler} className="form-input" />
         </div>
-        <button type='submit' className='btn btn-primary'>Submit</button>
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   )

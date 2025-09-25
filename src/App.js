@@ -15,6 +15,7 @@ import GiveLoan from './Components/Loans/GiveLoan';
 import BuyBill from './Components/Buyer/BuyBill';
 import BuyItems from './Components/Buyer/BuyItems';
 import AddBuyer from './Components/Buyer/AddBuyer';
+import NotFound from './Components/Other/NotFound';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path='/sales/bill/:id' element={<BuyBill />}/>
       <Route path='/sales/items/:id' element={<BuyItems />}/>
       <Route path='/add/buyer' element={<AddBuyer />}/>
+      <Route path='*' element={<NotFound />}/>
     </Routes>
   );
 }

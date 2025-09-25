@@ -1,18 +1,17 @@
 /* --- Google Font Import --- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* --- CSS Variables and General Setup --- */
 :root {
-  --primary-color: #4F46E5; /* Indigo */
+  --primary-color: #4F46E5;
   --primary-hover: #4338CA;
-  --secondary-color: #10B981; /* Emerald */
+  --secondary-color: #10B981;
   --secondary-hover: #059669;
-  --danger-color: #EF4444; /* Red */
+  --danger-color: #EF4444;
   --danger-hover: #DC2626;
-  --bg-color: #F9FAFB; /* Very Light Gray */
+  --bg-color: #F9FAFB;
   --surface-color: #FFFFFF;
-  --text-primary: #1F2937; /* Dark Slate */
-  --text-secondary: #6B7280; /* Medium Gray */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
   --border-color: #D1D5DB;
   --font-family: 'Poppins', sans-serif;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -30,7 +29,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Page Animation --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -40,7 +38,6 @@ body {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* --- Layout & Containers --- */
 .page-container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -59,7 +56,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* --- Home Page --- */
 .home-links-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -90,7 +86,6 @@ body {
   border-color: var(--primary-color);
 }
 
-/* --- Forms --- */
 .form-container, .filter-form {
   display: flex;
   flex-direction: column;
@@ -136,7 +131,6 @@ body {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
-/* --- Buttons --- */
 .btn {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -206,14 +200,23 @@ body {
   background-color: rgba(239, 68, 68, 0.1);
 }
 
+.btn-danger {
+  background-color: var(--danger-color);
+  color: #fff;
+  border: none;
+}
+.btn-danger:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
 .action-bar {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0rem;
   flex-wrap: wrap;
 }
 
-/* --- Tables --- */
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border-color);
@@ -245,19 +248,18 @@ body {
   border-bottom: none;
 }
 .data-table tbody tr:hover {
-  background-color: #F3F4F6; /* Lighter gray */
+  background-color: #F3F4F6;
 }
 .table-row-hover:hover {
   cursor: pointer;
-  background-color: #E5E7EB; /* Medium gray */
+  background-color: #E5E7EB;
 }
 
-
-/* --- Dropdown Select --- */
 .input-with-select {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 .dropdown-wrapper {
   position: absolute;
@@ -274,6 +276,11 @@ body {
   display: flex;
   align-items: flex-start;
 }
+.dropdown-left-auto {
+  left: 0;
+  right: auto;
+  min-width: 260px;
+}
 .dropdown-select {
   width: 100%;
   border: none;
@@ -283,7 +290,7 @@ body {
 }
 
 .btn-add {
-  text-decoration:none;
+  text-decoration: none;
   margin-left: 0.5rem;
   color: var(--secondary-color);
   transition: 1s ease;
@@ -294,7 +301,6 @@ body {
   rotate: 360deg;
 }
 
-/* --- Specific Components --- */
 .total-summary {
   text-align: right;
   font-size: 1.75rem;
@@ -373,7 +379,6 @@ body {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-/* Responsive */
 @media (max-width: 992px) {
   .add-item-section {
     grid-template-columns: 1fr;
@@ -398,7 +403,7 @@ body {
 }
 
 .page-header .page-title {
-  margin: 0; /* remove bottom margin, spacing handled by .page-header */
+  margin: 0;
 }
 
 .page-header .btn {
@@ -409,11 +414,11 @@ body {
 .date-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* space between inputs and slashes */
+  gap: 0.5rem;
 }
 
 .form-input-date {
-  width: 4rem; /* adjust as needed */
+  width: 4rem;
   padding: 0.6rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -423,5 +428,43 @@ body {
 }
 
 .form-input-date.year {
-  width: 6rem; /* wider for year */
+  width: 6rem;
+}
+
+.row-red {
+  color: red;
+}
+
+.reload-btn {
+  height: 40px;
+  padding: 0 0.75rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  width: min(520px, 92%);
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.modal-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
 }
