@@ -1,6 +1,11 @@
+// BuyItems.js
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import { usePDF } from 'react-to-pdf'
+
+const SUPPLIER_NAME = 'Gagan Traders'
+const SUPPLIER_GST = '09BFHPB6043M1ZA'
 
 export default function BuyItems() {
   const { id } = useParams()
@@ -14,10 +19,19 @@ export default function BuyItems() {
   const [selectedItem, setSelectedItem] = useState(null)
   const [selQuantity, setSelQuantity] = useState(1)
   const [selDiscount, setSelDiscount] = useState(0)
+  const [billInfo, setBillInfo] = useState({})
+  const [pdfGenerating, setPdfGenerating] = useState(false)
+  const [activeTab, setActiveTab] = useState('items')
+
+  // usePDF hook — the tag we print will be whatever targetRef points at
+  const { toPDF, targetRef } = usePDF({
+    filename: `invoice-${id}.pdf`
+  })
 
   useEffect(() => {
     document.title = 'Invoice list'
     fetchItems()
+    fetchBillInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
@@ -25,6 +39,7 @@ export default function BuyItems() {
     try {
       const response = await axiosInstance.get('/items/all')
       setAllItems(Array.isArray(response.data) ? response.data : [])
+
       const res = await axiosInstance.get(`/saleslist/all/${id}`)
       const curItems = Array.isArray(res.data)
         ? res.data.map((element) => ({
@@ -41,6 +56,15 @@ export default function BuyItems() {
       setItems(curItems)
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  const fetchBillInfo = async () => {
+    try {
+      const res = await axiosInstance.get(`/sales-book/${id}`)
+      if (res && res.data) setBillInfo(res.data)
+    } catch (err) {
+      console.error('Failed to fetch bill info', err)
     }
   }
 
@@ -69,20 +93,9 @@ export default function BuyItems() {
     setDeleting(true)
     try {
       await axiosInstance.delete(`/saleslist/delete/${id}/${deleteCandidate.itemId}`)
-      const response = await axiosInstance.get(`/saleslist/all/${id}`)
-      const curItems = Array.isArray(response.data)
-        ? response.data.map((element) => ({
-            name: element[0],
-            weight: element[1],
-            company: element[2],
-            mrp: element[3],
-            price: element[4],
-            quantity: element[5],
-            discount: element[6],
-            id: element[7]
-          }))
-        : []
-      setItems(curItems)
+      // refresh items after delete
+      await fetchItems()
+      // refresh all items list too (optional)
       const result = await axiosInstance.get('/items/all')
       setAllItems(Array.isArray(result.data) ? result.data : [])
     } catch (err) {
@@ -98,9 +111,13 @@ export default function BuyItems() {
     openDeleteConfirm(itemid, name)
   }
 
+  // total calculation (numeric and safe)
   const totalAmount = items.reduce((sum, each) => {
-    const gross = each.price * each.quantity
-    const net = gross * (100 - each.discount) / 100
+    const price = Number(each.price) || 0
+    const qty = Number(each.quantity) || 0
+    const disc = Number(each.discount) || 0
+    const gross = price * qty
+    const net = (gross * (100 - disc)) / 100
     return sum + net
   }, 0)
 
@@ -128,20 +145,8 @@ export default function BuyItems() {
     }
     try {
       await axiosInstance.post('/saleslist/add', req)
-      const response = await axiosInstance.get(`/saleslist/all/${id}`)
-      const curItems = Array.isArray(response.data)
-        ? response.data.map((element) => ({
-            name: element[0],
-            weight: element[1],
-            company: element[2],
-            mrp: element[3],
-            price: element[4],
-            quantity: element[5],
-            discount: element[6],
-            id: element[7]
-          }))
-        : []
-      setItems(curItems)
+      // refresh items and allItems after add
+      await fetchItems()
       const result = await axiosInstance.get('/items/all')
       setAllItems(Array.isArray(result.data) ? result.data : [])
     } catch (err) {
@@ -153,25 +158,42 @@ export default function BuyItems() {
     }
   }
 
-  return (
-    <div className="page-container animate-fade-in">
-      <div className="page-header">
-        <h1 className="page-title">Bill {id}:</h1>
-        <Link to="/sales" className="btn btn-secondary">Save</Link>
-      </div>
+  // wrap toPDF with indicator
+  const handleDownloadPDF = async () => {
+    try {
+      setPdfGenerating(true)
+      const res = toPDF()
+      if (res && typeof res.then === 'function') await res
+    } catch (err) {
+      console.error('PDF generation failed', err)
+      alert('Failed to generate PDF. See console for details.')
+    } finally {
+      setPdfGenerating(false)
+    }
+  }
 
+  const formatDate = () => {
+    if (billInfo.order_day && billInfo.order_month && billInfo.order_year) {
+      return `${billInfo.order_day}/${billInfo.order_month}/${billInfo.order_year}`
+    }
+    return ''
+  }
+
+  // Tab content renderers
+  const renderItemsTab = () => (
+    <div className="animate-fade-in">
       <div className="table-wrapper">
         <table className="data-table">
           <thead>
             <tr>
-              <th>S.I.</th>
+              <th>#</th>
               <th>Name</th>
               <th>Weight</th>
               <th>Company</th>
               <th>MRP</th>
               <th>Price</th>
-              <th>Quantity</th>
-              <th>Discount</th>
+              <th>Qty</th>
+              <th>Disc %</th>
               <th>Total</th>
               <th></th>
             </tr>
@@ -179,12 +201,14 @@ export default function BuyItems() {
           <tbody>
             {items.length === 0 ? (
               <tr>
-                <td colSpan={10} style={{ textAlign: 'center', padding: '1.25rem' }}>No items added yet.</td>
+                <td colSpan="10" className="placeholder-text">
+                  No items added yet.
+                </td>
               </tr>
             ) : (
-              items.map((each, index) => (
-                <tr key={each.id ?? index}>
-                  <td>{index + 1}</td>
+              items.map((each, idx) => (
+                <tr key={each.id ?? idx}>
+                  <td>{idx + 1}</td>
                   <td>{each.name}</td>
                   <td>{each.weight}</td>
                   <td>{each.company}</td>
@@ -192,10 +216,21 @@ export default function BuyItems() {
                   <td>{each.price}</td>
                   <td>{each.quantity}</td>
                   <td>{each.discount}</td>
-                  <td>{(each.quantity * each.price * (100 - each.discount) / 100).toFixed(2)}</td>
                   <td>
-                    <button className="btn-icon btn-delete" onClick={() => deleteHandler(each.id, each.name)} title="Delete" aria-label={`Delete item ${each.name}`}>
-                      &#128465;
+                    {(
+                      ((Number(each.price) || 0) *
+                        (Number(each.quantity) || 0) *
+                        (100 - (Number(each.discount) || 0))) /
+                      100
+                    ).toFixed(2)}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => deleteHandler(each.id, each.name)}
+                      className="btn-icon btn-delete"
+                      title="Delete"
+                    >
+                      🗑️
                     </button>
                   </td>
                 </tr>
@@ -205,91 +240,244 @@ export default function BuyItems() {
         </table>
       </div>
 
-      <h2 className="total-summary">Total: {totalAmount.toFixed(2)}</h2>
+      <div className="total-summary">Total: {totalAmount.toFixed(2)}</div>
+    </div>
+  )
 
-      <div className="add-item-section">
-        <div className="search-and-select">
-          <div className="form-group">
-            <label className="form-label">Search item by name:</label>
-            <input className="form-input" name="searchName" value={searchName} onChange={(e) => setSearchName(e.target.value)} placeholder="Type item name" />
-          </div>
-
-          <div className="table-wrapper search-results">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Weight</th>
-                  <th>Company</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>MRP</th>
-                  <th>Tax</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.map((it, idx) => (
-                  <tr key={it.id ?? idx} onClick={() => onSelectItem(it)} className={`table-row-hover ${it.stock === 0 ? 'row-red' : ''}`}>
-                    <td>{idx + 1}</td>
-                    <td>{it.name}</td>
-                    <td>{it.weight}</td>
-                    <td>{it.company}</td>
-                    <td>{it.c_price}</td>
-                    <td>{it.stock}</td>
-                    <td>{it.mrp}</td>
-                    <td>{it.tax}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+  const renderAddTab = () => (
+    <div className="animate-fade-in add-item-section">
+      <div>
+        <div className="form-group" style={{ marginBottom: 12 }}>
+          <label className="form-label">Search item by name</label>
+          <input
+            className="form-input"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="Type item name"
+          />
         </div>
 
-        <div className="selected-item-card">
-          {selectedItem ? (
-            <div>
-              <p className="selected-item-title">Selected: {selectedItem.name} ({selectedItem.weight})</p>
-
-              <div className="form-group">
-                <label className="form-label">Quantity:</label>
-                <input className="form-input" name="selQuantity" type="number" min="1" value={selQuantity} onChange={(e) => setSelQuantity(e.target.value)} />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Discount (%): </label>
-                <input className="form-input" name="selDiscount" type="number" min="0" max="100" value={selDiscount} onChange={(e) => setSelDiscount(e.target.value)} />
-              </div>
-
-              <div className="action-bar">
-                <button type="button" onClick={onAddClick} className="btn btn-primary">Add</button>
-              </div>
-            </div>
-          ) : (
-            <p className="placeholder-text">No item selected</p>
-          )}
-          <div className="action-buttons">
-            <a href="/add/item" target="_blank" rel="noreferrer" className="btn-link">Add New Item to Database</a>
-            <button type="button" className="btn btn-secondary" onClick={fetchAllItems} style={{ marginLeft: '30px' }}>Reload</button>
-          </div>
+        <div className="table-wrapper" style={{ maxHeight: 320, overflowY: 'auto' }}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Weight</th>
+                <th>Company</th>
+                <th>Price</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredItems.map((it, idx) => (
+                <tr
+                  key={it.id ?? idx}
+                  className="table-row-hover"
+                  onClick={() => onSelectItem(it)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <td>{idx + 1}</td>
+                  <td>{it.name}</td>
+                  <td>{it.weight}</td>
+                  <td>{it.company}</td>
+                  <td>{it.c_price}</td>
+                  <td>{it.stock}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {showConfirm && deleteCandidate && (
-        <div className="modal-overlay" onMouseDown={closeConfirm} role="dialog" aria-modal="true">
-          <div className="modal-box" onMouseDown={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 className="modal-title">Confirm deletion</h3>
-              <button onClick={closeConfirm} className="btn-icon" aria-label="Close" disabled={deleting}>&times;</button>
+      <div className="selected-item-card">
+        {selectedItem ? (
+          <>
+            <div className="selected-item-title">
+              {selectedItem.name} ({selectedItem.weight})
             </div>
 
-            <p style={{ margin: '0.25rem 0 1rem', color: 'var(--text-secondary, #6b7280)' }}>
-              Are you sure you want to delete <strong>{deleteCandidate.name}</strong> from this bill? This action cannot be undone.
-            </p>
+            <div className="form-group">
+              <label className="form-label">Quantity</label>
+              <input
+                className="form-input"
+                type="number"
+                min={1}
+                value={selQuantity}
+                onChange={(e) => setSelQuantity(e.target.value)}
+              />
+            </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" onClick={closeConfirm} className="btn btn-secondary" disabled={deleting}>Cancel</button>
-              <button type="button" onClick={confirmDelete} className="btn btn-danger" disabled={deleting}>
+            <div className="form-group">
+              <label className="form-label">Discount (%)</label>
+              <input
+                className="form-input"
+                type="number"
+                min={0}
+                max={100}
+                value={selDiscount}
+                onChange={(e) => setSelDiscount(e.target.value)}
+              />
+            </div>
+
+            <div className="action-bar" style={{ marginTop: 8 }}>
+              <button className="btn btn-primary" onClick={onAddClick}>
+                Add
+              </button>
+              <button className="btn btn-secondary" onClick={fetchAllItems}>
+                Reload Items
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="placeholder-text">No item selected</div>
+        )}
+
+        <a href="/add/item" target="_blank" rel="noreferrer" className="btn-link" style={{ marginTop: 12 }}>
+          Add New Item to Database
+        </a>
+      </div>
+    </div>
+  )
+
+  const renderPreviewTab = () => (
+    <div className="animate-fade-in preview-wrapper">
+      <div ref={targetRef} className="invoice-box" aria-label="Printable invoice" style={{padding: '32px'}}>
+        <div className="invoice-top" style={{display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+          <div>
+            <div className="supplier" style={{ fontWeight: 800, fontSize: 18 }}>
+              {SUPPLIER_NAME}
+            </div>
+            <div style={{ marginTop: 6 }}>GST: {SUPPLIER_GST}</div>
+          </div>
+
+          <div style={{ textAlign: 'right' }}>
+            <div>
+              <strong>Invoice #:</strong> {billInfo.bill_number ?? id}
+            </div>
+            <div>
+              <strong>Buyer:</strong> {billInfo.customer ?? '-'}
+            </div>
+            <div>
+              <strong>Date:</strong> {formatDate() || '-'}
+            </div>
+            <div>
+              <strong>Driver:</strong> {billInfo.carrier ?? '-'}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Weight</th>
+                <th>Company</th>
+                <th style={{ textAlign: 'right' }}>MRP</th>
+                <th style={{ textAlign: 'right' }}>Price</th>
+                <th style={{ textAlign: 'center' }}>Qty</th>
+                <th style={{ textAlign: 'center' }}>Disc %</th>
+                <th style={{ textAlign: 'right' }}>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.length === 0 ? (
+                <tr>
+                  <td colSpan="9" className="placeholder-text">
+                    No items added yet.
+                  </td>
+                </tr>
+              ) : (
+                items.map((it, idx) => {
+                  const price = Number(it.price) || 0
+                  const qty = Number(it.quantity) || 0
+                  const disc = Number(it.discount) || 0
+                  const total = (price * qty * (100 - disc)) / 100
+                  return (
+                    <tr key={it.id ?? idx}>
+                      <td>{idx + 1}</td>
+                      <td>{it.name}</td>
+                      <td>{it.weight}</td>
+                      <td>{it.company}</td>
+                      <td style={{ textAlign: 'right' }}>{it.mrp}</td>
+                      <td style={{ textAlign: 'right' }}>{price.toFixed(2)}</td>
+                      <td style={{ textAlign: 'center' }}>{qty}</td>
+                      <td style={{ textAlign: 'center' }}>{disc}</td>
+                      <td style={{ textAlign: 'right' }}>{total.toFixed(2)}</td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="total-summary" style={{ marginTop: 12 }}>
+          Total: {totalAmount.toFixed(2)}
+        </div>
+      </div>
+
+      <div className="action-bar" style={{ justifyContent: 'center', marginTop: 16 }}>
+        <button className="btn btn-primary" onClick={handleDownloadPDF} disabled={pdfGenerating}>
+          {pdfGenerating ? 'Generating PDF...' : 'Download PDF'}
+        </button>
+        <Link to="/sales" className="btn btn-secondary" style={{ marginLeft: 8 }}>
+          Back to Sales
+        </Link>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="page-container">
+      <div className="page-header">
+        <h1 className="page-title">Invoice #{id}</h1>
+        <Link to="/sales" className="btn btn-secondary">
+          Save
+        </Link>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="action-bar" style={{ justifyContent: 'center', marginBottom: 16 }}>
+        {['items', 'add', 'preview'].map((tab) => (
+          <button
+            key={tab}
+            className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setActiveTab(tab)}
+            style={{ minWidth: 120 }}
+          >
+            {tab === 'items' ? 'Items' : tab === 'add' ? 'Add / Search' : 'Print Preview'}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Contents */}
+      {activeTab === 'items' && renderItemsTab()}
+      {activeTab === 'add' && renderAddTab()}
+      {activeTab === 'preview' && renderPreviewTab()}
+
+      {/* Delete Modal */}
+      {showConfirm && deleteCandidate && (
+        <div className="modal-overlay" onMouseDown={closeConfirm}>
+          <div className="modal-box" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Confirm deletion</h2>
+              <button onClick={closeConfirm} className="btn-icon">
+                &times;
+              </button>
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              Are you sure you want to delete <strong>{deleteCandidate.name}</strong> from this bill? This action cannot be undone.
+            </div>
+
+            <div className="action-bar" style={{ justifyContent: 'flex-end' }}>
+              <button className="btn btn-secondary" onClick={closeConfirm} disabled={deleting}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={confirmDelete} disabled={deleting}>
                 {deleting ? 'Deleting...' : 'Delete'}
               </button>
             </div>
