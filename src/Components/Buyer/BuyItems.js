@@ -419,13 +419,10 @@ export default function BuyItems() {
         </div>
       </div>
 
-      <div className="action-bar" style={{ justifyContent: 'center', marginTop: 16 }}>
+      <div className="action-bar" style={{ justifyContent: 'center'}}>
         <button className="btn btn-primary" onClick={handleDownloadPDF} disabled={pdfGenerating}>
           {pdfGenerating ? 'Generating PDF...' : 'Download PDF'}
         </button>
-        <Link to="/sales" className="btn btn-secondary" style={{ marginLeft: 8 }}>
-          Back to Sales
-        </Link>
       </div>
     </div>
   )
