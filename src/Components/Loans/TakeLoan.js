@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function TakeLoan() {
   const [suppliers, setSuppliers] = useState([])
@@ -27,7 +28,8 @@ export default function TakeLoan() {
       const q = (form.gst || '').trim().toUpperCase()
       setShowDropdown(q === '' ? true : !gstList.some((g) => g.toUpperCase() === q))
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not get supplier details');
     }
   }
 
@@ -51,7 +53,8 @@ export default function TakeLoan() {
       })
       navigate('/loans/taken')
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Error connecting to the database.')
     }
   }
 

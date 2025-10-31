@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
 import { usePDF } from 'react-to-pdf'
+import Error from '../Other/Error'
 
 const SUPPLIER_NAME = 'Gagan Traders'
 const SUPPLIER_GST = '09BFHPB6043M1ZA'
@@ -22,6 +23,7 @@ export default function BuyItems() {
   const [billInfo, setBillInfo] = useState({})
   const [pdfGenerating, setPdfGenerating] = useState(false)
   const [activeTab, setActiveTab] = useState('items')
+  const [mounted, setMounted] = useState(true)
 
   // usePDF hook — the tag we print will be whatever targetRef points at
   const { toPDF, targetRef } = usePDF({
@@ -30,8 +32,10 @@ export default function BuyItems() {
 
   useEffect(() => {
     document.title = 'Invoice list'
+    setMounted(true)
     fetchItems()
-    fetchBillInfo()
+    fetchBill()
+    return () => setMounted(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
@@ -56,15 +60,17 @@ export default function BuyItems() {
       setItems(curItems)
     } catch (error) {
       console.error(error)
+      Error('Could not load items.')
     }
   }
 
-  const fetchBillInfo = async () => {
+  const fetchBill = async () => {
     try {
       const res = await axiosInstance.get(`/sales-book/${id}`)
-      if (res && res.data) setBillInfo(res.data)
+      if (mounted && res && res.data) setBillInfo(res.data)
     } catch (err) {
       console.error('Failed to fetch bill info', err)
+      Error('Failed to fetch bill info')
     }
   }
 
@@ -74,6 +80,7 @@ export default function BuyItems() {
       setAllItems(Array.isArray(res.data) ? res.data : [])
     } catch (error) {
       console.error(error)
+      Error('Could not fetch all items.')
     }
   }
 
@@ -100,6 +107,7 @@ export default function BuyItems() {
       setAllItems(Array.isArray(result.data) ? result.data : [])
     } catch (err) {
       console.error(err)
+      Error('Cannot delete due to server error.')
     } finally {
       setDeleting(false)
       setShowConfirm(false)
@@ -151,8 +159,8 @@ export default function BuyItems() {
       setAllItems(Array.isArray(result.data) ? result.data : [])
     } catch (err) {
       if (err.response) {
-        if (err.response.status === 500) alert('Not enough stock available.')
-        else alert(`Server error: ${err.response.status} - ${err.response.data?.message || ''}`)
+        if (err.response.status === 500) Error('Not enough stock available.')
+        else Error(`Server error: ${err.response.status} - ${err.response.data?.message || ''}`)
       }
       console.error(err)
     }
@@ -166,7 +174,7 @@ export default function BuyItems() {
       if (res && typeof res.then === 'function') await res
     } catch (err) {
       console.error('PDF generation failed', err)
-      alert('Failed to generate PDF. See console for details.')
+      Error('Failed to generate PDF. See console for details.')
     } finally {
       setPdfGenerating(false)
     }
@@ -342,8 +350,8 @@ export default function BuyItems() {
 
   const renderPreviewTab = () => (
     <div className="animate-fade-in preview-wrapper">
-      <div ref={targetRef} className="invoice-box" aria-label="Printable invoice" style={{padding: '32px'}}>
-        <div className="invoice-top" style={{display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+      <div ref={targetRef} className="invoice-box" aria-label="Printable invoice" style={{ padding: '32px' }}>
+        <div className="invoice-top" style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
           <div>
             <div className="supplier" style={{ fontWeight: 800, fontSize: 18 }}>
               {SUPPLIER_NAME}
@@ -419,7 +427,7 @@ export default function BuyItems() {
         </div>
       </div>
 
-      <div className="action-bar" style={{ justifyContent: 'center'}}>
+      <div className="action-bar" style={{ justifyContent: 'center' }}>
         <button className="btn btn-primary" onClick={handleDownloadPDF} disabled={pdfGenerating}>
           {pdfGenerating ? 'Generating PDF...' : 'Download PDF'}
         </button>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance'
+import Error from './Error'
 
 export default function AddDriver() {
   useEffect(() => {
@@ -24,7 +25,8 @@ export default function AddDriver() {
       await axiosInstance.post('/drivers', form)
       window.close()
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Backend refused to connect');
     }
   }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function AddSupplier() {
   useEffect(() => {
@@ -23,7 +24,8 @@ export default function AddSupplier() {
       await axiosInstance.post('/suppliers', form)
       window.close()
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not add the new supplier');
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function SalesBook() {
   const [sales, setSaless] = useState([])
@@ -17,7 +18,8 @@ export default function SalesBook() {
       const res = await axiosInstance.get(api)
       setSaless(res.data)
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Cannot load data due to server error.');
     }
   }
 
@@ -29,7 +31,8 @@ export default function SalesBook() {
         const res = await axiosInstance.get(api)
         setSaless(res.data)
       } catch (err) {
-        console.error(err)
+        console.error(err);
+        Error('Can not get data due to server error.');
       }
     }
     fetchSales()

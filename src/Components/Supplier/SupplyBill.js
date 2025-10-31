@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function SupplyBill() {
   const { id } = useParams()
@@ -31,6 +32,7 @@ export default function SupplyBill() {
       setShowDropdownSuppliers(q === '' ? true : !data.some((s) => s.toUpperCase() === q))
     } catch (err) {
       console.error(err)
+      Error('Could not fetch suppliers GSTs.');
     }
   }
 
@@ -43,7 +45,8 @@ export default function SupplyBill() {
       const q = (form.carrier || '').trim().toUpperCase()
       setShowDropdownDrivers(q === '' ? true : !data.some((d) => d.toUpperCase() === q))
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not fetch drivers list.');
     }
   }
 
@@ -61,7 +64,8 @@ export default function SupplyBill() {
           setShowDropdownSuppliers(q === '' ? true : !sData.some((s) => s.toUpperCase() === q))
         }
       } catch (err) {
-        console.error(err)
+        console.error(err);
+        Error('Could not get updated supplier details.');
       }
       try {
         const resDrivers = await axiosInstance.get('/drivers/all-licences')
@@ -74,6 +78,7 @@ export default function SupplyBill() {
         }
       } catch (err) {
         console.error(err)
+        Error('Could not get updated drivers details.')
       }
       try {
         const resBill = await axiosInstance.get(`/purchase-book/${id}`)
@@ -94,7 +99,8 @@ export default function SupplyBill() {
       await axiosInstance.post('/purchase-book', form)
       navigate(`/purchase/items/${id}`)
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not update details.');
     }
   }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function AddBuyer() {
   useEffect(() => {
@@ -23,7 +24,8 @@ export default function AddBuyer() {
       await axiosInstance.post('/buyers', form)
       window.close()
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not add buyer.');
     }
   }
 

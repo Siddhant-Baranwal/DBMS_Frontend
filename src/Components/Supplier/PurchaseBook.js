@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function PurchaseBook() {
   const [purchases, setPurchases] = useState([])
@@ -15,9 +16,10 @@ export default function PurchaseBook() {
     try {
       const api = `/purchase-book/search?start_date=${form.start_date}&end_date=${form.end_date}&gst=${form.gst}`
       const res = await axiosInstance.get(api)
-      setPurchases(res.data)
+      setPurchases(res.data);
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not fetch bills');
     }
   }
 
@@ -30,6 +32,7 @@ export default function PurchaseBook() {
         setPurchases(res.data)
       } catch (err) {
         console.error(err)
+        Error('Could not fetch bills');
       }
     }
     fetchSales()

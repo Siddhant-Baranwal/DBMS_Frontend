@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function LoansGiven() {
   const [loans, setLoans] = useState([])
@@ -20,7 +21,8 @@ export default function LoansGiven() {
       const res = await axiosInstance.get('/loansgiven/all')
       setLoans(res.data || [])
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not load loans database');
     } finally {
       setIsLoading(false)
     }
@@ -59,7 +61,8 @@ export default function LoansGiven() {
       await axiosInstance.delete(`/loansgiven/del/${encodeURIComponent(gstNumber)}/${encodeURIComponent(id)}`)
       await fetchLoans()
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Could not delete loan due to server error.');
     } finally {
       setDeleting(false)
       setShowConfirm(false)

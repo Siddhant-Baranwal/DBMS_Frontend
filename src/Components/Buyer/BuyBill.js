@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../api/axiosInstance'
+import Error from '../Other/Error'
 
 export default function BuyBill() {
   const { id } = useParams()
@@ -36,7 +37,8 @@ export default function BuyBill() {
           setShowDropdownBuyers(q === '' ? true : !data.some((s) => s.toUpperCase() === q))
         }
       } catch (err) {
-        console.error(err)
+        console.error(err);
+        Error('Failed to fetch buyers list.');
       }
     }
 
@@ -51,7 +53,8 @@ export default function BuyBill() {
           setShowDropdownDrivers(q === '' ? true : !data.some((d) => d.toUpperCase() === q))
         }
       } catch (err) {
-        console.error(err)
+        console.error(err);
+        Error('Failed to fetch drivers list.');
       }
     }
 
@@ -80,7 +83,8 @@ export default function BuyBill() {
       const q = (form.customer || '').trim().toUpperCase()
       setShowDropdownBuyers(q === '' ? true : !data.some((s) => s.toUpperCase() === q))
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Failed to reload buyers list.');
     }
   }
 
@@ -93,7 +97,8 @@ export default function BuyBill() {
       const q = (form.carrier || '').trim().toUpperCase()
       setShowDropdownDrivers(q === '' ? true : !data.some((d) => d.toUpperCase() === q))
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Failed to reload drivers list.');
     }
   }
 
@@ -103,7 +108,8 @@ export default function BuyBill() {
       await axiosInstance.post('/sales-book', form)
       navigate(`/sales/items/${id}`)
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Failed to save the bill details');
     }
   }
 

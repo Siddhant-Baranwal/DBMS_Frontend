@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../api/axiosInstance'
+import Error from './Error'
 
 export default function AddItem() {
   useEffect(() => {
@@ -23,7 +24,8 @@ export default function AddItem() {
       await axiosInstance.post('/items', form)
       window.close()
     } catch (err) {
-      console.error(err)
+      console.error(err);
+      Error('Backend refused to connect');
     }
   }
 
