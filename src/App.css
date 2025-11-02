@@ -89,6 +89,7 @@ body {
   padding: 20px;
   width: 100px;
   height: 100px;
+  filter: invert(100%);
 }
 
 .home-link:hover {
@@ -99,6 +100,7 @@ body {
 }
 
 .form-container, .filter-form {
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -116,18 +118,22 @@ body {
 
 .form-group {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-label {
   font-weight: 500;
   font-size: 0.9rem;
   color: var(--text-secondary);
+  min-width: 120px;
+  flex-shrink: 0;
+  text-align: right;
 }
 
 .form-input {
-  width: 100%;
+  flex-grow: 1;
   padding: 0.8rem 1rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -168,10 +174,16 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+
 .btn-primary {
   background-color: var(--primary-color);
   color: #fff;
+  width: 150px;
+  /* height: 50px; */
+  display: block;
+  margin: 0 auto;
 }
+
 .btn-primary:hover {
   background-color: var(--primary-hover);
 }
@@ -272,12 +284,15 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-grow: 1;
 }
+
+/** 🛠️ MODIFICATION HERE **/
 .dropdown-wrapper {
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  right: 0;/* Stretch the wrapper to the full width of its parent (.input-with-select) */
   z-index: 10;
   margin-top: 6px;
   border-radius: var(--border-radius);
@@ -291,8 +306,11 @@ body {
 .dropdown-left-auto {
   left: 0;
   right: auto;
-  min-width: 260px;
+  /* REMOVED min-width: 260px; to allow it to be flexible */
+  right: 87px; /* Ensures it stretches fully, overriding the 'right: auto;' if needed for width control */
 }
+/** 🛠️ END MODIFICATION **/
+
 .dropdown-select {
   width: 100%;
   border: none;
@@ -395,6 +413,16 @@ body {
   .add-item-section {
     grid-template-columns: 1fr;
   }
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .form-label {
+    width: auto;
+    text-align: left;
+    min-width: unset;
+  }
 }
 @media (max-width: 768px) {
   .filter-form {
@@ -479,4 +507,57 @@ body {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
+}
+
+/* --- Dark Theme --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Main color inversions */
+    --bg-color: #111827;         /* Very dark blue-gray */
+    --surface-color: #1F2937;    /* Dark gray (for cards, inputs) */
+    --text-primary: #F9FAFB;     /* Very light gray (almost white) */
+    --text-secondary: #9CA3AF;   /* Lighter gray */
+    --border-color: #374151;     /* Medium-dark gray for borders */
+
+    /* Adjusted shadows for dark background (more opaque) */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.15);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.25), 0 4px 6px -2px rgb(0 0 0 / 0.25);
+  }
+
+  /* --- Fix hardcoded light colors --- */
+  
+  .data-table tbody tr:hover {
+    background-color: #374151; /* Was #F3F4F6 */
+  }
+  .table-row-hover:hover {
+    background-color: #4B5563; /* Was #E5E7EB */
+  }
+
+  /* --- Improve visibility --- */
+
+  /* Make focus ring brighter */
+  .form-input:focus {
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4); /* Was 0.2 opacity */
+  }
+  
+  /* Make modal overlay darker */
+  .modal-overlay {
+    background-color: rgba(15, 23, 42, 0.8); /* Was 0.6 opacity */
+  }
+
+  /* Use variables for modal box shadow/border */
+  .modal-box {
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+  }
+}
+
+.search{
+  padding: 10px;
+  margin: 10px;
+}
+
+.search:hover{
+  background-color:#4B5563;
 }

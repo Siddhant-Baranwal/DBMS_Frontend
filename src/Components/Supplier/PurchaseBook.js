@@ -62,7 +62,7 @@ export default function PurchaseBook() {
           <label className="form-label">GST:</label>
           <input name="gst" value={form.gst} onChange={changeHandler} className="form-input" />
         </div>
-        <button type="submit" className="btn btn-icon">&#128269;</button>
+        <button type="submit" className="btn btn-icon search">&#128269;</button>
       </form>
       <div className="table-wrapper">
         <table className="data-table">
