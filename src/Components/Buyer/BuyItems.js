@@ -255,7 +255,7 @@ export default function BuyItems() {
   const renderAddTab = () => (
     <div className="animate-fade-in add-item-section">
       <div>
-        <div className="form-group" style={{ marginBottom: 12 }}>
+        <div className="form-group mb-12">
           <label className="form-label">Search item by name</label>
           <input
             className="form-input"
@@ -265,7 +265,7 @@ export default function BuyItems() {
           />
         </div>
 
-        <div className="table-wrapper" style={{ maxHeight: 320, overflowY: 'auto' }}>
+        <div className="table-wrapper search-results-max-height">
           <table className="data-table">
             <thead>
               <tr>
@@ -281,9 +281,8 @@ export default function BuyItems() {
               {filteredItems.map((it, idx) => (
                 <tr
                   key={it.id ?? idx}
-                  className="table-row-hover"
+                  className="table-row-hover cursor-pointer"
                   onClick={() => onSelectItem(it)}
-                  style={{ cursor: 'pointer' }}
                 >
                   <td>{idx + 1}</td>
                   <td>{it.name}</td>
@@ -328,7 +327,7 @@ export default function BuyItems() {
               />
             </div>
 
-            <div className="action-bar" style={{ marginTop: 8 }}>
+            <div className="action-bar action-bar-spaced">
               <button className="btn btn-primary" onClick={onAddClick}>
                 Add
               </button>
@@ -341,7 +340,7 @@ export default function BuyItems() {
           <div className="placeholder-text">No item selected</div>
         )}
 
-        <a href="/add/item" target="_blank" rel="noreferrer" className="btn-link" style={{ marginTop: 12 }}>
+        <a href="/add/item" target="_blank" rel="noreferrer" className="btn-link btn-link-spaced">
           Add New Item to Database
         </a>
       </div>
@@ -349,51 +348,55 @@ export default function BuyItems() {
   )
 
   const renderPreviewTab = () => (
-    <div className="animate-fade-in preview-wrapper">
-      <div ref={targetRef} className="invoice-box" aria-label="Printable invoice" style={{ padding: '32px' }}>
-        <div className="invoice-top" style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+    <div className="invoice-preview-container">
+      <div
+        ref={targetRef}
+        className="invoice-preview-box"
+        aria-label="Printable invoice"
+      >
+        <div className="invoice-preview-header">
           <div>
-            <div className="supplier" style={{ fontWeight: 800, fontSize: 18 }}>
+            <div className="invoice-preview-title-large">
               {SUPPLIER_NAME}
             </div>
-            <div style={{ marginTop: 6 }}>GST: {SUPPLIER_GST}</div>
+            <div className="invoice-preview-meta">GST: {SUPPLIER_GST}</div>
           </div>
 
-          <div style={{ textAlign: 'right' }}>
+          <div className="invoice-preview-aligned-right">
             <div>
-              <strong>Invoice #:</strong> {billInfo.bill_number ?? id}
+              <span className="invoice-preview-bold">Invoice #:</span> {billInfo.bill_number ?? id}
             </div>
             <div>
-              <strong>Buyer:</strong> {billInfo.customer ?? '-'}
+              <span className="invoice-preview-bold">Buyer:</span> {billInfo.customer ?? '-'}
             </div>
             <div>
-              <strong>Date:</strong> {formatDate() || '-'}
+              <span className="invoice-preview-bold">Date:</span> {formatDate() || '-'}
             </div>
             <div>
-              <strong>Driver:</strong> {billInfo.carrier ?? '-'}
+              <span className="invoice-preview-bold">Driver:</span> {billInfo.carrier ?? '-'}
             </div>
           </div>
         </div>
 
-        <div style={{ marginTop: 12 }}>
-          <table className="data-table">
+        <div className="invoice-preview-table-wrapper">
+          <table className="invoice-preview-table">
             <thead>
-              <tr>
+              <tr className="invoice-preview-table-header">
                 <th>#</th>
                 <th>Name</th>
                 <th>Weight</th>
                 <th>Company</th>
-                <th style={{ textAlign: 'right' }}>MRP</th>
-                <th style={{ textAlign: 'right' }}>Price</th>
-                <th style={{ textAlign: 'center' }}>Qty</th>
-                <th style={{ textAlign: 'center' }}>Disc %</th>
-                <th style={{ textAlign: 'right' }}>Total</th>
+                <th className="invoice-preview-table-aligned-right">MRP</th>
+                <th className="invoice-preview-table-aligned-right">Price</th>
+                <th className="invoice-preview-table-aligned-center">Qty</th>
+                <th className="invoice-preview-table-aligned-center">Disc %</th>
+                <th className="invoice-preview-table-aligned-right">Total</th>
               </tr>
             </thead>
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="placeholder-text">
+                  <td colSpan="9" className="invoice-preview-empty">
                     No items added yet.
                   </td>
                 </tr>
@@ -404,16 +407,16 @@ export default function BuyItems() {
                   const disc = Number(it.discount) || 0
                   const total = (price * qty * (100 - disc)) / 100
                   return (
-                    <tr key={it.id ?? idx}>
+                    <tr key={it.id ?? idx} className="invoice-preview-row-border">
                       <td>{idx + 1}</td>
                       <td>{it.name}</td>
                       <td>{it.weight}</td>
                       <td>{it.company}</td>
-                      <td style={{ textAlign: 'right' }}>{it.mrp}</td>
-                      <td style={{ textAlign: 'right' }}>{price.toFixed(2)}</td>
-                      <td style={{ textAlign: 'center' }}>{qty}</td>
-                      <td style={{ textAlign: 'center' }}>{disc}</td>
-                      <td style={{ textAlign: 'right' }}>{total.toFixed(2)}</td>
+                      <td className="invoice-preview-table-aligned-right">{it.mrp}</td>
+                      <td className="invoice-preview-table-aligned-right">{price.toFixed(2)}</td>
+                      <td className="invoice-preview-table-aligned-center">{qty}</td>
+                      <td className="invoice-preview-table-aligned-center">{disc}</td>
+                      <td className="invoice-preview-table-aligned-right">{total.toFixed(2)}</td>
                     </tr>
                   )
                 })
@@ -422,12 +425,18 @@ export default function BuyItems() {
           </table>
         </div>
 
-        <div className="total-summary" style={{ marginTop: 12 }}>
-          Total: {totalAmount.toFixed(2)}
+        <div className="invoice-preview-total">
+          Total: ₹{totalAmount.toFixed(2)}
         </div>
+        
+        <div className="invoice-preview-signature">
+          <div className="invoice-preview-signature-left">Receiver's Signature</div>
+          <div className="invoice-preview-signature-right">Supplier's Signature</div>
+        </div>
+
       </div>
 
-      <div className="action-bar" style={{ justifyContent: 'center' }}>
+      <div className="action-bar action-bar-center mt-16">
         <button className="btn btn-primary" onClick={handleDownloadPDF} disabled={pdfGenerating}>
           {pdfGenerating ? 'Generating PDF...' : 'Download PDF'}
         </button>
@@ -445,13 +454,12 @@ export default function BuyItems() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="action-bar" style={{ justifyContent: 'center', marginBottom: 16 }}>
+      <div className="action-bar action-bar-center-top">
         {['items', 'add', 'preview'].map((tab) => (
           <button
             key={tab}
-            className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
+            className={`btn tab-button ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
             onClick={() => setActiveTab(tab)}
-            style={{ minWidth: 120 }}
           >
             {tab === 'items' ? 'Items' : tab === 'add' ? 'Add / Search' : 'Print Preview'}
           </button>
@@ -474,11 +482,11 @@ export default function BuyItems() {
               </button>
             </div>
 
-            <div style={{ marginBottom: 12 }}>
+            <div className="mb-12">
               Are you sure you want to delete <strong>{deleteCandidate.name}</strong> from this bill? This action cannot be undone.
             </div>
 
-            <div className="action-bar" style={{ justifyContent: 'flex-end' }}>
+            <div className="action-bar action-bar-end">
               <button className="btn btn-secondary" onClick={closeConfirm} disabled={deleting}>
                 Cancel
               </button>

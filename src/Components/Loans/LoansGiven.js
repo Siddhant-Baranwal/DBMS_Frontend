@@ -77,14 +77,14 @@ export default function LoansGiven() {
         <Link to="/" className="btn btn-secondary">Home</Link>
       </div>
 
-      <div className="action-bar" style={{ alignItems: 'center' }}>
+      <div className="action-bar">
         <button onClick={orderByDate} className="btn btn-secondary">Order by date</button>
         <button onClick={orderByGST} className="btn btn-secondary">Order by buyer</button>
         <button onClick={reloadHandler} className="btn btn-secondary">Reload</button>
         <Link to="/add/loansgiven" className="btn btn-primary">Give a new loan</Link>
       </div>
 
-      <div className="table-wrapper" style={{ marginTop: '1rem' }}>
+      <div className="table-wrapper">
         <table className="data-table">
           <thead className="tablehead">
             <tr>
@@ -99,11 +99,11 @@ export default function LoansGiven() {
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '1.5rem' }}>Loading...</td>
+                <td colSpan={6} className="loading-row">Loading...</td>
               </tr>
             ) : loans.length === 0 ? (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '1.5rem' }}>No loans found.</td>
+                <td colSpan={6} className="empty-row">No loans found.</td>
               </tr>
             ) : (
               loans.map((item, index) => {
@@ -138,13 +138,13 @@ export default function LoansGiven() {
               <button onClick={closeConfirm} className="btn-icon" aria-label="Close" disabled={deleting}>&times;</button>
             </div>
 
-            <p style={{ margin: '0.25rem 0 1rem', color: 'var(--text-secondary, #6b7280)' }}>
+            <p className="modal-message">
               Are you sure you want to delete the loan for <strong>{deleteCandidate.gstNumber || '(unknown GST)'}</strong>
               {deleteCandidate.id ? <> (id: <strong>{deleteCandidate.id}</strong>)</> : null}
               ? This action cannot be undone.
             </p>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+            <div className="action-bar-end">
               <button type="button" onClick={closeConfirm} className="btn btn-secondary" disabled={deleting}>Cancel</button>
               <button type="button" onClick={confirmDelete} className="btn btn-danger" disabled={deleting}>
                 {deleting ? 'Deleting...' : 'Delete'}
